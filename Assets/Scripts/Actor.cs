@@ -21,6 +21,7 @@ public class Actor : MonoBehaviour, IEntity {
 
     #region State
     private int currentHealth; 
+    private Inventory inventory;
     #endregion
 
 
@@ -39,10 +40,21 @@ public class Actor : MonoBehaviour, IEntity {
         }
 
         currentHealth = totalHealth;
+
+        inventory = GetComponent<Inventory>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    public bool lootItem(Item item){
+        if(inventory != null){
+            inventory.addNewItem(item);
+            return true;
+        }
+
+        return false;
+    }
 }

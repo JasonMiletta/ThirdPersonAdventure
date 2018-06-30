@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerInventory : MonoBehaviour {
+public class Inventory : MonoBehaviour {
 
     #region Info
     [Header("Parameters")]
