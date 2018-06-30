@@ -18,6 +18,9 @@ public class Item : MonoBehaviour, IEntity, IInteractable {
         get;
         set;
     }
+    public bool isInteractable{
+        get;set;
+    }
     #endregion
 
 
