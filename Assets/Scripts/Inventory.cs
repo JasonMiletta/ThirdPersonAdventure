@@ -11,6 +11,10 @@ public class Inventory : MonoBehaviour {
 	public List<Item> inventoryList;
 	#endregion
 
+	#region State
+	public int currentCapacity = 0;
+	#endregion
+
 	// Use this for initialization
 	void Start () {
 		inventoryList = new List<Item>();
@@ -20,10 +24,13 @@ public class Inventory : MonoBehaviour {
 	void Update () {
 		
 	}
-
+	/// <summary>
+	///	This adds the provided item to the current inventory and updates the current capacity of this inventory
+	/// </summary>
 	public bool addNewItem(Item newItem){
-		if(inventoryList.Count < maxCapacity){
+		if((currentCapacity + newItem.weight) < maxCapacity){
 			inventoryList.Add(newItem);
+			currentCapacity += newItem.weight;
 			return true;
 		}
 
@@ -40,6 +47,7 @@ public class Inventory : MonoBehaviour {
 
 	public void removeItem(int itemIndex){
 		if(inventoryList.Count > itemIndex){
+			currentCapacity -= inventoryList[itemIndex].weight;
 			inventoryList.RemoveAt(itemIndex);
 		}
 	}
