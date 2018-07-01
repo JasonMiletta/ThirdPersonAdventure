@@ -551,7 +551,7 @@ GameObject:
   - component: {fileID: 114853557023736434}
   m_Layer: 0
   m_Name: ybot
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1864,8 +1864,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1439261738375168}
-  m_LocalRotation: {x: -2.5254592e-14, y: -0.9341352, z: -1.9285939e-14, w: 0.3569195}
-  m_LocalPosition: {x: -2.537876, y: -0.0002925396, z: -0.040500626}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.043, y: 0.287, z: 3.109}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4929045798496676}
@@ -2076,7 +2076,7 @@ Animator:
   m_GameObject: {fileID: 1785769221993842}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d40a623cc8d048a4d81d65239839adfa, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -2111,9 +2111,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 1439261738375168}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 521b611700410be45810047f0a74e899, type: 3}
+  m_Script: {fileID: 11500000, guid: 7f29d08b725cb8f4786f22fedfbc8aa9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_MovingTurnSpeed: 360
+  m_StationaryTurnSpeed: 180
+  m_JumpPower: 12
+  m_GravityMultiplier: 2
+  m_RunCycleLegOffset: 0.2
+  m_MoveSpeedMultiplier: 0.07
+  m_AnimSpeedMultiplier: 1
+  m_GroundCheckDistance: 0.1
 --- !u!114 &114853557023736434
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2122,17 +2130,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1439261738375168}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ce7a80d520cacc042b5fe14f373d8173, type: 3}
+  m_Script: {fileID: 11500000, guid: 5de48f4a43fdbc2418325278bf424592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_MovingTurnSpeed: 360
-  m_StationaryTurnSpeed: 180
-  m_JumpPower: 6
-  m_GravityMultiplier: 2
-  m_RunCycleLegOffset: 1
-  m_MoveSpeedMultiplier: 0.0725
-  m_AnimSpeedMultiplier: 1
-  m_GroundCheckDistance: 0.3
+  closestItem: {fileID: 0}
 --- !u!136 &136312584312116486
 CapsuleCollider:
   m_ObjectHideFlags: 1
