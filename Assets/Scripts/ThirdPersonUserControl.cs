@@ -3,15 +3,16 @@ using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
 
 [RequireComponent(typeof (ThirdPersonCharacter))]
+[RequireComponent(typeof (Actor))]
 public class ThirdPersonUserControl : MonoBehaviour
 {
 
     #region State
     [Header("State attributes")]
-    public Item closestItem;
     #endregion
 
     private ThirdPersonCharacter m_Character; // A reference to the ThirdPersonCharacter on the object
+    private Actor m_Actor;
     private Transform m_Cam;                  // A reference to the main camera in the scenes transform
     private Vector3 m_CamForward;             // The current forward direction of the camera
     private Vector3 m_Move;
@@ -34,6 +35,7 @@ public class ThirdPersonUserControl : MonoBehaviour
 
         // get the third person character ( this should never be null due to require component )
         m_Character = GetComponent<ThirdPersonCharacter>();
+        m_Actor = GetComponent<Actor>();
     }
 
 
@@ -43,13 +45,14 @@ public class ThirdPersonUserControl : MonoBehaviour
         {
             m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
         }
+        handleInteract();
     }
 
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
     {
-        handlePickup();
+        handleInteract();
         movement();
     }
 
@@ -73,7 +76,7 @@ public class ThirdPersonUserControl : MonoBehaviour
         }
 #if !MOBILE_INPUT
         // walk speed multiplier
-        if (Input.GetKey(KeyCode.LeftShift)) m_Move *= 0.5f;
+        if (Input.GetKey(KeyCode.LeftShift)) m_Move *= 0.4f;
 #endif
 
         // pass all parameters to the character control script
@@ -82,10 +85,10 @@ public class ThirdPersonUserControl : MonoBehaviour
         m_Jump = false;
     }
 
-    private void handlePickup(){
-        float interactInput = CrossPlatformInputManager.GetAxis("Interact");
-        if(interactInput > 0){
-            
+    private void handleInteract(){
+        if(CrossPlatformInputManager.GetButtonDown("Interact") && m_Character.hasItemInRange()){
+            Item item = m_Character.getClosestItemInRange();
+            m_Actor.lootItem(item);
         }
     }
 }

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
@@ -5,6 +6,8 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class ThirdPersonCharacter : MonoBehaviour
 {
+	#region Parameters
+	[Header("Parameters")]
 	[SerializeField] float m_MovingTurnSpeed = 360;
 	[SerializeField] float m_StationaryTurnSpeed = 180;
 	[SerializeField] float m_JumpPower = 12f;
@@ -13,7 +16,9 @@ public class ThirdPersonCharacter : MonoBehaviour
 	[SerializeField] float m_MoveSpeedMultiplier = 1f;
 	[SerializeField] float m_AnimSpeedMultiplier = 1f;
 	[SerializeField] float m_GroundCheckDistance = 0.1f;
+	#endregion
 
+	#region Components
 	Rigidbody m_Rigidbody;
 	Animator m_Animator;
 	bool m_IsGrounded;
@@ -26,7 +31,44 @@ public class ThirdPersonCharacter : MonoBehaviour
 	Vector3 m_CapsuleCenter;
 	CapsuleCollider m_Capsule;
 	bool m_Crouching;
+	#endregion
 
+	#region State
+	List<Item> itemsInRange = new List<Item>();
+	#endregion
+
+	/// <summary>
+	/// Callback to draw gizmos that are pickable and always drawn.
+	/// </summary>
+	void OnDrawGizmos()
+	{
+	}
+
+	/// <summary>
+	/// OnTriggerEnter is called when the Collider other enters the trigger.
+	/// </summary>
+	/// <param name="other">The other Collider involved in this collision.</param>
+	void OnTriggerEnter(Collider other)
+	{
+		var Item = other.GetComponent<Item>();
+		if(Item != null){
+			Item.displayUIPrompt();
+			itemsInRange.Add(Item);
+		}
+	}
+
+	/// <summary>
+	/// OnTriggerExit is called when the Collider other has stopped touching the trigger.
+	/// </summary>
+	/// <param name="other">The other Collider involved in this collision.</param>
+	void OnTriggerExit(Collider other)
+	{
+		var Item = other.GetComponent<Item>();
+		if(Item != null){
+			Item.hideUIPrompt();
+			itemsInRange.Remove(Item);
+		}
+	}
 	void Start()
 	{
 		m_Animator = GetComponent<Animator>();
@@ -37,6 +79,14 @@ public class ThirdPersonCharacter : MonoBehaviour
 
 		m_Rigidbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
 		m_OrigGroundCheckDistance = m_GroundCheckDistance;
+	}
+
+	/// <summary>
+	/// Update is called every frame, if the MonoBehaviour is enabled.
+	/// </summary>
+	void Update()
+	{
+
 	}
 
 
@@ -217,5 +267,22 @@ public class ThirdPersonCharacter : MonoBehaviour
 			m_GroundNormal = Vector3.up;
 			m_Animator.applyRootMotion = false;
 		}
+	}
+
+	public bool hasItemInRange(){
+		return itemsInRange.Count > 0;
+	}
+
+	public Item getClosestItemInRange(){
+		Item closestItem = null;
+		float shortestDistance = 1000f;
+		foreach(Item item in itemsInRange){
+			float distance = Vector3.Distance(transform.position, item.transform.position);
+			if(distance < shortestDistance){
+				closestItem = item;
+				shortestDistance = distance; 
+			}
+		}
+		return closestItem;
 	}
 }

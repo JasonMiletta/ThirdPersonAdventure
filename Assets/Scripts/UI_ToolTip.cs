@@ -31,24 +31,6 @@ public class UI_ToolTip : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		transform.position = parentObjectTransform.position + displayPositionOffset;
-		if(playerPosition != null){
-			
-			#if UNITY_EDITOR
-			// helper to visualise the ground check ray in the scene view
-			Debug.DrawLine(parentObjectTransform.position, playerPosition.position, Color.grey);
-			#endif
-
-			//if the player is close enough to display the tool tip
-			if(Mathf.Abs(Vector3.Distance(playerPosition.position, parentObjectTransform.position)) <= distanceToDisplayTooltip){
-				if(!isDisplaying){
-					displayTooltip();
-				}
-			} else {
-				if(isDisplaying){
-					hideTooltip();
-				}
-			}
-		}
 	}
 
 	public void displayTooltip(){

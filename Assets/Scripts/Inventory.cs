@@ -8,16 +8,20 @@ public class Inventory : MonoBehaviour {
     [Header("Parameters")]
     [Tooltip("Info/Parameters/Settings for this Actor")]
 	public int maxCapacity = 10;
-	public List<Item> inventoryList;
+	public List<GameObject> inventoryList;
 	#endregion
 
 	#region State
 	public int currentCapacity = 0;
 	#endregion
 
+	#region Component
+	public GameObject backpack;
+	#endregion
+
 	// Use this for initialization
 	void Start () {
-		inventoryList = new List<Item>();
+		inventoryList = new List<GameObject>();
 	}
 	
 	// Update is called once per frame
@@ -29,7 +33,7 @@ public class Inventory : MonoBehaviour {
 	/// </summary>
 	public bool addNewItem(Item newItem){
 		if((currentCapacity + newItem.weight) < maxCapacity){
-			inventoryList.Add(newItem);
+			inventoryList.Add(newItem.gameObject);
 			currentCapacity += newItem.weight;
 			return true;
 		}
@@ -37,7 +41,7 @@ public class Inventory : MonoBehaviour {
 		return false;
 	}
 
-	public Item retrieveItem(int itemIndex){
+	public GameObject retrieveItem(int itemIndex){
 		if(inventoryList.Count > itemIndex){
 			return inventoryList[itemIndex];
 		}
@@ -47,7 +51,7 @@ public class Inventory : MonoBehaviour {
 
 	public void removeItem(int itemIndex){
 		if(inventoryList.Count > itemIndex){
-			currentCapacity -= inventoryList[itemIndex].weight;
+			currentCapacity -= inventoryList[itemIndex].GetComponent<Item>().weight;
 			inventoryList.RemoveAt(itemIndex);
 		}
 	}
