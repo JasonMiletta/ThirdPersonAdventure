@@ -19,7 +19,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	#region Components
 	public Rigidbody hips;
 	public Rigidbody spineMid;
+	public Rigidbody leftKnee;
 	public Rigidbody leftFoot;
+	public Rigidbody rightKnee;
 	public Rigidbody rightFoot;
 	#endregion
 
@@ -27,6 +29,12 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	public AnimationState currentAnimationState = AnimationState.Standing;
 	public Vector3 currentFloorPosition;
 	public Vector3 forwardFacingTargetVector;
+	[SerializeField]
+	private float stepSpeed;
+	private float currentStepTime;
+	private bool stepWithLeftLeg = false;
+	[SerializeField]
+	private float legStrength = 1.0f;
 	#endregion
 	
     #region GIZMOS
@@ -56,9 +64,18 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		bool didHit = Physics.Raycast(ray, out hit);
 		uprightRotationalCorrectionUpdate();
 		forwardFacingRotationalCorrectionUpdate();
-		if(currentAnimationState == AnimationState.Standing){
-			standingUpdate(didHit, hit, spineMid.transform.position);
-			//spineMid.AddForce(Vector3.up * standingForce, ForceMode.Force);
+		standingUpdate(didHit, hit, spineMid.transform.position);
+	
+		if(currentAnimationState == AnimationState.Walking){
+			walkingUpdate(didHit, hit, spineMid.transform.position);
+		}
+	}
+
+	public void moveInDirection(Vector3 movementVector){
+		if(movementVector == Vector3.zero){
+			currentAnimationState = AnimationState.Standing;
+		} else {
+			currentAnimationState = AnimationState.Walking;
 		}
 	}
 	
@@ -68,6 +85,32 @@ public class PhysicsAnimation_Human : MonoBehaviour {
             Vector3 appliedStandingForce = Vector3.up * proportionalHeight * standingForce;
             spineMid.AddForceAtPosition(appliedStandingForce, standingPosition, ForceMode.Force);
             raysToDraw.Add(new Ray(standingPosition, appliedStandingForce));
+		}
+	}
+
+	private void walkingUpdate(bool didHit, RaycastHit hit, Vector3 position){
+		if(didHit){
+			currentStepTime += Time.deltaTime;
+			if(currentStepTime > stepSpeed){
+				currentStepTime = 0.0f;
+				stepWithLeftLeg = !stepWithLeftLeg;
+			}
+			Vector3 upForwardVector = new Vector3(0.0f, 1.0f, 1.0f * legStrength);
+			Vector3 backVector =  -Vector3.forward * legStrength;
+			if(stepWithLeftLeg){
+				//Step With left leg
+				leftKnee.AddForce(upForwardVector, ForceMode.Force);
+				rightKnee.AddForce(backVector, ForceMode.Force);
+				
+				raysToDraw.Add(new Ray(leftKnee.transform.position, upForwardVector));
+				raysToDraw.Add(new Ray(rightKnee.transform.position,backVector));
+			} else {
+				//Step With right leg
+				rightKnee.AddForce(upForwardVector, ForceMode.Force);
+				leftKnee.AddForce(backVector, ForceMode.Force);
+				raysToDraw.Add(new Ray(rightKnee.transform.position, upForwardVector));
+				raysToDraw.Add(new Ray(leftKnee.transform.position,backVector));
+			}
 		}
 	}
 
