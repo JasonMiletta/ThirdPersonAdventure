@@ -42,6 +42,8 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	private bool stepWithLeftLeg = false;
 	[SerializeField]
 	private float legStrength = 1.0f;
+	[SerializeField]
+	private float footStrength = 1.0f;
 	#endregion
 	
     #region GIZMOS
@@ -119,10 +121,12 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 			Vector3 backVector =  -forwardFacingTargetVector * legStrength;
 			if(stepWithLeftLeg){
 				//Step With left leg
+				leftFoot.AddForce((upForwardVector + (Vector3.up * 2)) * footStrength, ForceMode.Force);
 				leftKnee.AddForce(upForwardVector, ForceMode.Force);
 				leftThigh.AddForce(upForwardVector, ForceMode.Force);
 				leftHand.AddForce(backVector * 0.5f, ForceMode.Force);
 
+				rightFoot.AddForce(backVector * 0.5f, ForceMode.Force);
 				rightKnee.AddForce(backVector, ForceMode.Force);
 				rightThigh.AddForce(backVector, ForceMode.Force);
 				rightHand.AddForce(upForwardVector * 0.5f, ForceMode.Force);
@@ -131,10 +135,12 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 				raysToDraw.Add(new Ray(rightKnee.transform.position,backVector));
 			} else {
 				//Step With right leg
+				rightFoot.AddForce((upForwardVector + (Vector3.up * 2)) * footStrength, ForceMode.Force);
 				rightKnee.AddForce(upForwardVector, ForceMode.Force);
 				rightThigh.AddForce(upForwardVector, ForceMode.Force);
 				rightHand.AddForce(backVector * 0.5f, ForceMode.Force);
 
+				leftFoot.AddForce(backVector * 0.5f, ForceMode.Force);
 				leftKnee.AddForce(backVector, ForceMode.Force);
 				leftThigh.AddForce(backVector, ForceMode.Force);
 				leftHand.AddForce(upForwardVector * 0.5f, ForceMode.Force);
