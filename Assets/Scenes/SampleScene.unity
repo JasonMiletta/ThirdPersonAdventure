@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1526980366}
-  m_IndirectSpecularColor: {r: 0.3163647, g: 0.58341825, b: 0.7309747, a: 1}
+  m_IndirectSpecularColor: {r: 0.3162722, g: 0.58311886, b: 0.7305351, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2230,7 +2230,7 @@ Prefab:
     - target: {fileID: 144474242996621728, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_ConnectedAnchor.x
-      value: 0.000036984216
+      value: 0.00003575435
       objectReference: {fileID: 0}
     - target: {fileID: 144474242996621728, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
@@ -2305,12 +2305,12 @@ Prefab:
     - target: {fileID: 144534151645068932, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_ConnectedAnchor.x
-      value: 0.00076634425
+      value: -0.17780477
       objectReference: {fileID: 0}
     - target: {fileID: 144534151645068932, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_ConnectedAnchor.y
-      value: -1.0011419
+      value: -1.001268
       objectReference: {fileID: 0}
     - target: {fileID: 144534151645068932, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
@@ -2335,7 +2335,7 @@ Prefab:
     - target: {fileID: 144330904560230422, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_ConnectedAnchor.x
-      value: 0.00003603698
+      value: 0.000036698908
       objectReference: {fileID: 0}
     - target: {fileID: 144330904560230422, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
@@ -2345,7 +2345,7 @@ Prefab:
     - target: {fileID: 144330904560230422, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_ConnectedAnchor.z
-      value: 0.4545407
+      value: 0.45454156
       objectReference: {fileID: 0}
     - target: {fileID: 59863778650704226, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
@@ -2410,12 +2410,12 @@ Prefab:
     - target: {fileID: 144936159333858452, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_ConnectedAnchor.x
-      value: 0.00076719513
+      value: 0.17933765
       objectReference: {fileID: 0}
     - target: {fileID: 144936159333858452, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_ConnectedAnchor.y
-      value: -1.0011405
+      value: -1.0010145
       objectReference: {fileID: 0}
     - target: {fileID: 144936159333858452, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
@@ -2494,42 +2494,42 @@ Prefab:
     - target: {fileID: 144256404997522608, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_Swing2Limit.limit
-      value: 90.09183
+      value: 60.579254
       objectReference: {fileID: 0}
     - target: {fileID: 144256404997522608, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_HighTwistLimit.limit
-      value: 90.96866
+      value: 102.12521
       objectReference: {fileID: 0}
     - target: {fileID: 144256404997522608, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_LowTwistLimit.limit
-      value: -41.580383
+      value: -11.867322
       objectReference: {fileID: 0}
     - target: {fileID: 144256404997522608, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_Swing1Limit.limit
-      value: 81.13203
+      value: 105.458374
       objectReference: {fileID: 0}
     - target: {fileID: 144968316555751092, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_LowTwistLimit.limit
-      value: -91.14534
+      value: -102.87332
       objectReference: {fileID: 0}
     - target: {fileID: 144968316555751092, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_HighTwistLimit.limit
-      value: 31.324095
+      value: 11.484512
       objectReference: {fileID: 0}
     - target: {fileID: 144968316555751092, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_Swing2Limit.limit
-      value: 92.4214
+      value: 59.17209
       objectReference: {fileID: 0}
     - target: {fileID: 144968316555751092, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_Swing1Limit.limit
-      value: 88.572525
+      value: 97.67014
       objectReference: {fileID: 0}
     - target: {fileID: 1428226560874046, guid: 9f8d2fa80229b6a4a891e164657a2d9f, type: 2}
       propertyPath: m_Layer
@@ -2602,7 +2602,7 @@ Prefab:
     - target: {fileID: 144534151645068932, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_Swing1Limit.limit
-      value: 62.20696
+      value: 70.92393
       objectReference: {fileID: 0}
     - target: {fileID: 144534151645068932, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
@@ -2612,7 +2612,7 @@ Prefab:
     - target: {fileID: 144534151645068932, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_LowTwistLimit.limit
-      value: 0.33395863
+      value: 3.026785
       objectReference: {fileID: 0}
     - target: {fileID: 144534151645068932, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
@@ -2622,57 +2622,57 @@ Prefab:
     - target: {fileID: 144936159333858452, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_Swing2Limit.limit
-      value: 21.550518
+      value: 15.932537
       objectReference: {fileID: 0}
     - target: {fileID: 144936159333858452, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_HighTwistLimit.limit
-      value: -1.9985985
+      value: -3.6273081
       objectReference: {fileID: 0}
     - target: {fileID: 144936159333858452, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_Swing1Limit.limit
-      value: 65.43143
+      value: 70.67051
       objectReference: {fileID: 0}
     - target: {fileID: 144330904560230422, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_LowTwistLimit.limit
-      value: -5.9210863
+      value: -11.214822
       objectReference: {fileID: 0}
     - target: {fileID: 144330904560230422, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_HighTwistLimit.limit
-      value: 48.89377
+      value: 38.185513
       objectReference: {fileID: 0}
     - target: {fileID: 144330904560230422, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_Swing1Limit.limit
-      value: 21.998688
+      value: 11.259649
       objectReference: {fileID: 0}
     - target: {fileID: 144330904560230422, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_Swing2Limit.limit
-      value: 22.486542
+      value: 11.997711
       objectReference: {fileID: 0}
     - target: {fileID: 144474242996621728, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_Swing2Limit.limit
-      value: 26.738953
+      value: 11.702031
       objectReference: {fileID: 0}
     - target: {fileID: 144474242996621728, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_Swing1Limit.limit
-      value: 16.29831
+      value: 11.132574
       objectReference: {fileID: 0}
     - target: {fileID: 144474242996621728, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_LowTwistLimit.limit
-      value: -1.7424861
+      value: -15.91689
       objectReference: {fileID: 0}
     - target: {fileID: 144474242996621728, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
       propertyPath: m_HighTwistLimit.limit
-      value: 60.94162
+      value: 38.223866
       objectReference: {fileID: 0}
     - target: {fileID: 144936159333858452, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
         type: 2}
@@ -2814,6 +2814,14 @@ Prefab:
     - target: {fileID: 1459150196134172, guid: 9f8d2fa80229b6a4a891e164657a2d9f, type: 2}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 4865370612252564, guid: 9f8d2fa80229b6a4a891e164657a2d9f, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4158321258501360, guid: 9f8d2fa80229b6a4a891e164657a2d9f, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -1.25
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 0}
@@ -4737,9 +4745,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   standingForce: 20000
-  standingHeight: 1.12
-  uprightTorque: 0
-  forwardFacingTorque: 5000
+  standingHeight: 1.13
+  uprightTorque: 1000
+  forwardFacingTorque: 500
   hips: {fileID: 1905205283}
   spineMid: {fileID: 1261784284}
   leftThigh: {fileID: 880403497}
@@ -4751,12 +4759,12 @@ MonoBehaviour:
   rightFoot: {fileID: 844079251}
   rightHand: {fileID: 74630296}
   currentAnimationState: 0
-  currentFloorPosition: {x: 0, y: 0, z: 0}
+  currentFloorPosition: {x: -3.6101532, y: 0.10732949, z: 0.037800007}
   forwardFacingTargetVector: {x: 0, y: 0, z: 0}
-  walkSpeed: 10
+  walkSpeed: 15
   stepPace: 0.5
-  legStrength: 50
-  footStrength: 1
+  legStrength: 40
+  footStrength: 30
 --- !u!114 &1905205290
 MonoBehaviour:
   m_ObjectHideFlags: 0

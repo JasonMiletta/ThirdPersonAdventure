@@ -79,13 +79,17 @@ public class PhysicsAnimation_Human : MonoBehaviour {
         RaycastHit hit;
 		bool didHit = Physics.Raycast(ray, out hit, standingHeight, (1 << LayerMask.NameToLayer("Terrain")));
 		spheresToDraw.Add(hit.point);
-		uprightRotationalCorrectionUpdate();
 		forwardFacingRotationalCorrectionUpdate();
 		standingUpdate(didHit, hit, spineMid.transform.position);
-	
-		if(currentAnimationState == AnimationState.Walking){
+		
+		if(currentAnimationState == AnimationState.Standing){
+
+		}
+		else if(currentAnimationState == AnimationState.Walking){
 			walkingUpdate(didHit, hit, spineMid.transform.position);
 		}
+		
+		uprightRotationalCorrectionUpdate();
 	}
 
 	public void moveInDirection(Vector3 movementVector){
@@ -102,8 +106,10 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	private void standingUpdate(bool didHit, RaycastHit hit, Vector3 standingPosition){
 		if(didHit){
 			spheresToDraw.Add(hit.point);
+
             float proportionalHeight = (standingHeight - hit.distance) / standingHeight;
             Vector3 appliedStandingForce = Vector3.up * proportionalHeight * standingForce;
+
             spineMid.AddForce(appliedStandingForce, ForceMode.Force);
             raysToDraw.Add(new Ray(standingPosition, appliedStandingForce));
 		}
@@ -118,32 +124,36 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 			}
 			
 			Vector3 upForwardVector = forwardFacingTargetVector * legStrength;
+			Vector3 forwardFootVector = forwardFacingTargetVector * footStrength;
 			Vector3 backVector =  -forwardFacingTargetVector * legStrength;
+			Vector3 backFootVector = -forwardFacingTargetVector * footStrength;
+
+
 			if(stepWithLeftLeg){
 				//Step With left leg
-				leftFoot.AddForce((upForwardVector + (Vector3.up * 2)) * footStrength, ForceMode.Force);
-				leftKnee.AddForce(upForwardVector, ForceMode.Force);
-				leftThigh.AddForce(upForwardVector, ForceMode.Force);
-				leftHand.AddForce(backVector * 0.5f, ForceMode.Force);
+				leftFoot.AddForce(forwardFootVector, ForceMode.Force);
+				leftKnee.AddForce(upForwardVector + (Vector3.up * 3), ForceMode.Force);
+				leftThigh.AddForce(upForwardVector * 2.0f, ForceMode.Force);
+				leftHand.AddForce(backVector, ForceMode.Force);
 
-				rightFoot.AddForce(backVector * 0.5f, ForceMode.Force);
+				rightFoot.AddForce(backFootVector, ForceMode.Force);
 				rightKnee.AddForce(backVector, ForceMode.Force);
 				rightThigh.AddForce(backVector, ForceMode.Force);
-				rightHand.AddForce(upForwardVector * 0.5f, ForceMode.Force);
+				rightHand.AddForce(upForwardVector, ForceMode.Force);
 				
 				raysToDraw.Add(new Ray(leftKnee.transform.position, upForwardVector));
 				raysToDraw.Add(new Ray(rightKnee.transform.position,backVector));
 			} else {
 				//Step With right leg
-				rightFoot.AddForce((upForwardVector + (Vector3.up * 2)) * footStrength, ForceMode.Force);
-				rightKnee.AddForce(upForwardVector, ForceMode.Force);
-				rightThigh.AddForce(upForwardVector, ForceMode.Force);
-				rightHand.AddForce(backVector * 0.5f, ForceMode.Force);
+				rightFoot.AddForce(forwardFootVector, ForceMode.Force);
+				rightKnee.AddForce(upForwardVector + (Vector3.up * 3), ForceMode.Force);
+				rightThigh.AddForce(upForwardVector * 2.0f, ForceMode.Force);
+				rightHand.AddForce(backVector, ForceMode.Force);
 
-				leftFoot.AddForce(backVector * 0.5f, ForceMode.Force);
+				leftFoot.AddForce(backFootVector, ForceMode.Force);
 				leftKnee.AddForce(backVector, ForceMode.Force);
 				leftThigh.AddForce(backVector, ForceMode.Force);
-				leftHand.AddForce(upForwardVector * 0.5f, ForceMode.Force);
+				leftHand.AddForce(upForwardVector, ForceMode.Force);
 
 				raysToDraw.Add(new Ray(rightKnee.transform.position, upForwardVector));
 				raysToDraw.Add(new Ray(leftKnee.transform.position,backVector));
@@ -152,9 +162,16 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	}
 
 	private void uprightRotationalCorrectionUpdate(){
-		Vector3 floorNormal = Vector3.up;
-		var rot = Quaternion.FromToRotation(spineMid.transform.up, floorNormal);
- 		spineMid.AddTorque(new Vector3(rot.x, rot.y, rot.z)*uprightTorque);
+		Vector3 appliedStandingForce = Vector3.zero;
+
+		if(currentAnimationState == AnimationState.Standing){
+			float xOffset = getCurrentFloorPosition().x - spineMid.transform.position.x;
+			float zOffset = getCurrentFloorPosition().z - spineMid.transform.position.z;
+			appliedStandingForce.x = xOffset * uprightTorque;
+			appliedStandingForce.z = zOffset * uprightTorque;
+			spineMid.AddForce(appliedStandingForce, ForceMode.Force);
+		} else if(currentAnimationState == AnimationState.Walking){
+		}
 	}
 
 	private void forwardFacingRotationalCorrectionUpdate(){
@@ -166,6 +183,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	}
 
 	private Vector3 getCurrentFloorPosition(){
-		return (leftFoot.transform.position + rightFoot.transform.position) / 2;
+		currentFloorPosition = (leftFoot.transform.position + rightFoot.transform.position) / 2;
+		return currentFloorPosition;
 	}
 }
