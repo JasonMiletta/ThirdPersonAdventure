@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PhysicsAnimation_Human : MonoBehaviour {
 
-	public enum AnimationState {Standing, Walking, Running, Jumping};
+	public enum AnimationState {Standing, Walking, Running, Jumping, Falling};
 
 
 	[Header("Parameters")]
@@ -70,6 +70,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		if(hips != null){
 			forwardFacingTargetVector = hips.transform.forward;
 		}
+		currentAnimationState = AnimationState.Standing;
 	}
 	
 	// Update is called once per frame
@@ -77,10 +78,19 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		Ray ray = new Ray (spineMid.transform.position, Vector3.down);
 		raysToDraw.Add(ray);
         RaycastHit hit;
-		bool didHit = Physics.Raycast(ray, out hit, standingHeight, (1 << LayerMask.NameToLayer("Terrain")));
+		//If we're falling, wait till the person hits the ground for extra goof
+		float raycastDistance = currentAnimationState == AnimationState.Falling ? 0.5f : standingHeight;
+		bool didHit = Physics.Raycast(ray, out hit, raycastDistance, (1 << LayerMask.NameToLayer("Terrain")));
 		spheresToDraw.Add(hit.point);
-		forwardFacingRotationalCorrectionUpdate();
-		standingUpdate(didHit, hit, spineMid.transform.position);
+
+		if(didHit){
+			if(currentAnimationState == AnimationState.Falling){
+				currentAnimationState = AnimationState.Standing;
+			}
+		} else {
+			currentAnimationState = AnimationState.Falling;
+		}
+
 		
 		if(currentAnimationState == AnimationState.Standing){
 
@@ -89,18 +99,24 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 			walkingUpdate(didHit, hit, spineMid.transform.position);
 		}
 		
-		uprightRotationalCorrectionUpdate();
+		if(currentAnimationState != AnimationState.Falling){
+			forwardFacingRotationalCorrectionUpdate();
+			standingUpdate(didHit, hit, spineMid.transform.position);
+			uprightRotationalCorrectionUpdate();
+		}
 	}
 
 	public void moveInDirection(Vector3 movementVector){
-		if(movementVector == Vector3.zero){
-			currentAnimationState = AnimationState.Standing;
-		} else {
-			currentAnimationState = AnimationState.Walking;
-		}
+		if(currentAnimationState != AnimationState.Falling){
+			if(movementVector == Vector3.zero){
+				currentAnimationState = AnimationState.Standing;
+			} else {
+				currentAnimationState = AnimationState.Walking;
+			}
 
-		forwardFacingTargetVector = movementVector;
-		hips.AddForce(movementVector * walkSpeed, ForceMode.Acceleration);
+			forwardFacingTargetVector = movementVector;
+			hips.AddForce(movementVector * walkSpeed, ForceMode.Acceleration);
+		}
 	}
 	
 	private void standingUpdate(bool didHit, RaycastHit hit, Vector3 standingPosition){
