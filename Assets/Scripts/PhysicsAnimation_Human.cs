@@ -78,16 +78,10 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		Ray ray = new Ray (spineMid.transform.position, Vector3.down);
 		raysToDraw.Add(ray);
         RaycastHit hit;
-		//If we're falling, wait till the person hits the ground for extra goof
-		float raycastDistance = currentAnimationState == AnimationState.Falling ? 0.5f : standingHeight;
-		bool didHit = Physics.Raycast(ray, out hit, raycastDistance, (1 << LayerMask.NameToLayer("Terrain")));
+		bool didHit = Physics.Raycast(ray, out hit, standingHeight * 2, (1 << LayerMask.NameToLayer("Terrain")));
 		spheresToDraw.Add(hit.point);
 
-		if(didHit){
-			if(currentAnimationState == AnimationState.Falling){
-				currentAnimationState = AnimationState.Standing;
-			}
-		} else {
+		if(!didHit){
 			currentAnimationState = AnimationState.Falling;
 		}
 
