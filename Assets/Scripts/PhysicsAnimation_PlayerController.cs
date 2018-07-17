@@ -40,6 +40,9 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
         if (!m_Jump)
         {
             m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+            if(m_Jump){
+                human.jump();
+            }
         }
     }
 

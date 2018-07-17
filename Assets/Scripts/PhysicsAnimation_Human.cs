@@ -13,6 +13,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	public float standingHeight = 1.0f;
 	public float uprightTorque = 5f;
 	public float forwardFacingTorque = 5f;
+	public float jumpStrength = 1.0f;
 	#endregion
 
 	[Header("Components")]
@@ -112,6 +113,17 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 			hips.AddForce(movementVector * walkSpeed, ForceMode.Acceleration);
 		}
 	}
+
+	public void jump(){
+		//currentAnimationState = AnimationState.Jumping;
+		spineMid.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+
+		if(stepWithLeftLeg){
+			rightKnee.AddForce(forwardFacingTargetVector * jumpStrength, ForceMode.Impulse);
+		} else {
+			leftKnee.AddForce(forwardFacingTargetVector * jumpStrength, ForceMode.Impulse);
+		}
+	}
 	
 	private void standingUpdate(bool didHit, RaycastHit hit, Vector3 standingPosition){
 		if(didHit){
@@ -196,4 +208,5 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		currentFloorPosition = (leftFoot.transform.position + rightFoot.transform.position) / 2;
 		return currentFloorPosition;
 	}
+
 }
