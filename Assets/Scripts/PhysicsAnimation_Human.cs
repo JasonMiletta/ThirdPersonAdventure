@@ -79,7 +79,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		Ray ray = new Ray (spineMid.transform.position, Vector3.down);
 		raysToDraw.Add(ray);
         RaycastHit hit;
-		bool didHit = Physics.Raycast(ray, out hit, standingHeight * 2, (1 << LayerMask.NameToLayer("Terrain")));
+
+		float standingRaycastDistance = standingHeight * 2;
+		bool didHit = Physics.Raycast(ray, out hit, standingRaycastDistance, (1 << LayerMask.NameToLayer("Terrain")));
 		spheresToDraw.Add(hit.point);
 
 		if(!didHit){
@@ -88,7 +90,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 
 		
 		if(currentAnimationState == AnimationState.Standing){
-
+			standStraightCorrectionUpdate();
 		}
 		else if(currentAnimationState == AnimationState.Walking){
 			walkingUpdate(didHit, hit, spineMid.transform.position);
@@ -97,10 +99,13 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		if(currentAnimationState != AnimationState.Falling){
 			forwardFacingRotationalCorrectionUpdate();
 			standingUpdate(didHit, hit, spineMid.transform.position);
-			uprightRotationalCorrectionUpdate();
 		}
 	}
 
+	/// <summary>
+	/// PlayerAction: Set the correct animationState. Add the necessary force to move the character based on player input. This doesn't 
+	/// provide any additional force/animation beyond pushing the hips.
+	///</summary>
 	public void moveInDirection(Vector3 movementVector){
 		if(currentAnimationState != AnimationState.Falling){
 			if(movementVector == Vector3.zero){
@@ -114,6 +119,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// PlayerAction: Fire off the necessary force to make the character jump.
+	/// </summary>
 	public void jump(){
 		currentAnimationState = AnimationState.Jumping;
 		spineMid.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
@@ -126,6 +134,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		}
 	}
 	
+	/// <summary>
+	/// This provides the necessary vertical force to keep the character standing at the correct height
+	///</summary>
 	private void standingUpdate(bool didHit, RaycastHit hit, Vector3 standingPosition){
 		if(didHit){
 			spheresToDraw.Add(hit.point);
@@ -138,6 +149,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// Handles all of the walking physic animations with the legs and hands.
+	///</summary>
 	private void walkingUpdate(bool didHit, RaycastHit hit, Vector3 position){
 		if(didHit){
 			currentStepTime += Time.deltaTime;
@@ -184,19 +198,23 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		}
 	}
 
-	private void uprightRotationalCorrectionUpdate(){
+	/// <summary>
+	///Grabs the current floor position (mid point between the current feet positions) and creates a horizontal force to keep 
+	/// spineMid centered. Note: No upward force is created here, only x and z axis.
+	///</summary>
+	private void standStraightCorrectionUpdate(){
 		Vector3 appliedStandingForce = Vector3.zero;
 
-		if(currentAnimationState == AnimationState.Standing){
-			float xOffset = getCurrentFloorPosition().x - spineMid.transform.position.x;
-			float zOffset = getCurrentFloorPosition().z - spineMid.transform.position.z;
-			appliedStandingForce.x = xOffset * uprightTorque;
-			appliedStandingForce.z = zOffset * uprightTorque;
-			spineMid.AddForce(appliedStandingForce, ForceMode.Force);
-		} else if(currentAnimationState == AnimationState.Walking){
-		}
+		float xOffset = getCurrentFloorPosition().x - spineMid.transform.position.x;
+		float zOffset = getCurrentFloorPosition().z - spineMid.transform.position.z;
+		appliedStandingForce.x = xOffset * uprightTorque;
+		appliedStandingForce.z = zOffset * uprightTorque;
+		spineMid.AddForce(appliedStandingForce, ForceMode.Force);
 	}
 
+	/// <summary>
+	/// Rotates the spineMid and hips to attempt to face the forwardFacingTargetVector (The last movement direction of the character)
+	///</summary>
 	private void forwardFacingRotationalCorrectionUpdate(){
 		var hipsRotation = Quaternion.FromToRotation(hips.transform.forward, forwardFacingTargetVector);
  		hips.AddTorque(new Vector3(hipsRotation.x, hipsRotation.y, hipsRotation.z)*forwardFacingTorque);
@@ -205,6 +223,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
  		spineMid.AddTorque(new Vector3(spineMidRotation.x, spineMidRotation.y, spineMidRotation.z)*forwardFacingTorque);
 	}
 
+	/// <summary>
+	/// Grabs the current midpoint between the left and right foot
+	///</summary>
 	private Vector3 getCurrentFloorPosition(){
 		currentFloorPosition = (leftFoot.transform.position + rightFoot.transform.position) / 2;
 		return currentFloorPosition;
