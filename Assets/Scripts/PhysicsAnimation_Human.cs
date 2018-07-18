@@ -120,6 +120,13 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	}
 
 	/// <summary>
+	///	PlayerAction: Animate the characters arms and upper body to grab an item
+	///</summary>
+	public void grabItem(Item item){
+		
+	}
+
+	/// <summary>
 	/// PlayerAction: Fire off the necessary force to make the character jump.
 	/// </summary>
 	public void jump(){
