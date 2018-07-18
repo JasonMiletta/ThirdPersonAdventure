@@ -115,8 +115,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	}
 
 	public void jump(){
-		//currentAnimationState = AnimationState.Jumping;
+		currentAnimationState = AnimationState.Jumping;
 		spineMid.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+		hips.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
 
 		if(stepWithLeftLeg){
 			rightKnee.AddForce(forwardFacingTargetVector * jumpStrength, ForceMode.Impulse);
