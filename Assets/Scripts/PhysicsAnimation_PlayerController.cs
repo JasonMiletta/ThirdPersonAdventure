@@ -51,6 +51,7 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
     private void FixedUpdate()
     {
         movement();
+        handleSit();
     }
 
     private void movement(){
@@ -80,6 +81,13 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
         human.moveInDirection(m_Move);
         
         m_Jump = false;
+    }
+
+    private void handleSit(){
+        bool sitInput = CrossPlatformInputManager.GetButtonDown("Sit");
+        if(sitInput){
+            human.sit();
+        }
     }
 
     private void handleInteract(){

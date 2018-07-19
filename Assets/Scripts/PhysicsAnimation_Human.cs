@@ -4,13 +4,15 @@ using UnityEngine;
 
 public class PhysicsAnimation_Human : MonoBehaviour {
 
-	public enum AnimationState {Standing, Walking, Running, Jumping, Falling};
+	public enum AnimationState {Standing, Walking, Running, Jumping, Falling, Sitting};
 
 
 	[Header("Parameters")]
 	#region Parameters
 	public float standingForce = 1.0f;
 	public float standingHeight = 1.0f;
+	public float sittingForce = 1.0f;
+	public float sittingHeight = 1.0f;
 	public float uprightTorque = 5f;
 	public float forwardFacingTorque = 5f;
 	public float jumpStrength = 1.0f;
@@ -94,9 +96,11 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		}
 		else if(currentAnimationState == AnimationState.Walking){
 			walkingUpdate(didHit, hit, spineMid.transform.position);
+		} else if(currentAnimationState == AnimationState.Sitting){
+			sittingUpdate(didHit, hit, spineMid.transform.position);
 		}
 		
-		if(currentAnimationState != AnimationState.Falling){
+		if(currentAnimationState != AnimationState.Falling && currentAnimationState != AnimationState.Sitting){
 			forwardFacingRotationalCorrectionUpdate();
 			standingUpdate(didHit, hit, spineMid.transform.position);
 		}
@@ -107,7 +111,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	/// provide any additional force/animation beyond pushing the hips.
 	///</summary>
 	public void moveInDirection(Vector3 movementVector){
-		if(currentAnimationState != AnimationState.Falling){
+		if(currentAnimationState != AnimationState.Falling && currentAnimationState != AnimationState.Sitting){
 			if(movementVector == Vector3.zero){
 				currentAnimationState = AnimationState.Standing;
 			} else {
@@ -140,6 +144,14 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 			leftKnee.AddForce(forwardFacingTargetVector * jumpStrength, ForceMode.Impulse);
 		}
 	}
+
+	public void sit(){
+		if(currentAnimationState == AnimationState.Standing){
+			currentAnimationState = AnimationState.Sitting;
+		} else if(currentAnimationState == AnimationState.Sitting){
+			currentAnimationState = AnimationState.Standing;
+		}
+	}
 	
 	/// <summary>
 	/// This provides the necessary vertical force to keep the character standing at the correct height
@@ -159,6 +171,12 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	/// <summary>
 	/// Handles all of the walking physic animations with the legs and hands.
 	///</summary>
+	private void sittingUpdate(bool didHit, RaycastHit hit, Vector3 sittingPosition){
+            float proportionalHeight = (sittingHeight - hit.distance) / sittingHeight;
+            Vector3 appliedSittingForce = Vector3.up * proportionalHeight * sittingForce;
+
+            spineMid.AddForce(appliedSittingForce, ForceMode.Force);
+	}
 	private void walkingUpdate(bool didHit, RaycastHit hit, Vector3 position){
 		if(didHit){
 			currentStepTime += Time.deltaTime;
@@ -169,8 +187,8 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 			
 			Vector3 upForwardVector = forwardFacingTargetVector * legStrength;
 			Vector3 forwardFootVector = forwardFacingTargetVector * footStrength;
-			Vector3 backVector =  -forwardFacingTargetVector * legStrength;
-			Vector3 backFootVector = -forwardFacingTargetVector * footStrength;
+			Vector3 backVector =  -forwardFacingTargetVector * legStrength * 0.5f;
+			Vector3 backFootVector = -forwardFacingTargetVector * footStrength *0.5f;
 
 
 			if(stepWithLeftLeg){
