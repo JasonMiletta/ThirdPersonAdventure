@@ -28,7 +28,7 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
 	void OnTriggerEnter(Collider other)
 	{
 		var Item = other.GetComponent<Item>();
-		if(Item != null){
+		if(Item != null && !Item.isCurrentlyHeld){
 			Item.displayUIPrompt();
 			itemsInRange.Add(Item);
 		}
@@ -125,7 +125,11 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
     private void handleInteract(){
         if(CrossPlatformInputManager.GetButtonDown("Grab") && this.hasItemInRange()){
             Item item = this.getClosestItemInRange();
-            m_actor.grabItem(item);
+            if(item.isGrabbable){
+                m_actor.grabItem(item);
+            } else if(item.isLootable){
+                m_actor.lootItem(item);
+            }
         }
     }
 

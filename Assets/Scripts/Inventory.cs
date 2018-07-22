@@ -19,6 +19,12 @@ public class Inventory : MonoBehaviour {
 	public GameObject backpack;
 	#endregion
 
+	#region Events
+    public delegate void ItemInventoryEvent(Item item, Inventory inventory);
+    public static event ItemInventoryEvent OnItemAdded;
+    public static event ItemInventoryEvent OnItemRemoved;
+	#endregion
+
 	// Use this for initialization
 	void Start () {
 		inventoryList = new List<GameObject>();
@@ -35,6 +41,8 @@ public class Inventory : MonoBehaviour {
 		if((currentCapacity + newItem.weight) < maxCapacity){
 			inventoryList.Add(newItem.gameObject);
 			currentCapacity += newItem.weight;
+			
+            if(OnItemAdded != null){OnItemAdded(newItem, this);}
 			return true;
 		}
 
@@ -51,8 +59,11 @@ public class Inventory : MonoBehaviour {
 
 	public void removeItem(int itemIndex){
 		if(inventoryList.Count > itemIndex){
-			currentCapacity -= inventoryList[itemIndex].GetComponent<Item>().weight;
+			Item itemToRemove = inventoryList[itemIndex].GetComponent<Item>();
+			currentCapacity -= itemToRemove.weight;
 			inventoryList.RemoveAt(itemIndex);
+			
+            if(OnItemRemoved != null){OnItemRemoved(itemToRemove, this);}
 		}
 	}
 }
