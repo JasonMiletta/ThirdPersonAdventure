@@ -7,17 +7,45 @@ using UnityStandardAssets.CrossPlatformInput;
 [RequireComponent(typeof (PhysicsAnimation_Human))]
 public class PhysicsAnimation_PlayerController : MonoBehaviour {
 
-    #region State
-    [Header("State attributes")]
-    #endregion
-
-	private PhysicsAnimation_Human human;
+    #region Components
+	private PhysicsAnimation_Human human;   //Human that we're controlling (This should be where all the physics go)
+    private Actor m_actor;                  // Reference to the actor of the human we're controlling (This should be were all the state of the human go)
     private Transform m_Cam;                  // A reference to the main camera in the scenes transform
     private Vector3 m_CamForward;             // The current forward direction of the camera
     private Vector3 m_Move;
     private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
-
+    #endregion
     
+	#region State
+    [Header("State attributes")]
+	List<Item> itemsInRange = new List<Item>();
+	#endregion
+
+	/// <summary>
+	/// OnTriggerEnter is called when the Collider other enters the trigger.
+	/// </summary>
+	/// <param name="other">The other Collider involved in this collision.</param>
+	void OnTriggerEnter(Collider other)
+	{
+		var Item = other.GetComponent<Item>();
+		if(Item != null){
+			Item.displayUIPrompt();
+			itemsInRange.Add(Item);
+		}
+	}
+
+	/// <summary>
+	/// OnTriggerExit is called when the Collider other has stopped touching the trigger.
+	/// </summary>
+	/// <param name="other">The other Collider involved in this collision.</param>
+	void OnTriggerExit(Collider other)
+	{
+		var Item = other.GetComponent<Item>();
+		if(Item != null){
+			Item.hideUIPrompt();
+			itemsInRange.Remove(Item);
+		}
+	}
     private void Start()
     {
         // get the transform of the main camera
@@ -32,6 +60,7 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
             // we use self-relative controls in this case, which probably isn't what the user wants, but hey, we warned them!
         }
 		human = GetComponent<PhysicsAnimation_Human>();
+        m_actor = GetComponent<Actor>();
     }
 
 
@@ -44,6 +73,9 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
                 human.jump();
             }
         }
+        
+        handleDropItem();
+        handleInteract();
     }
 
 
@@ -91,9 +123,32 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
     }
 
     private void handleInteract(){
-        /*if(CrossPlatformInputManager.GetButtonDown("Interact") && m_Character.hasItemInRange()){
-            Item item = m_Character.getClosestItemInRange();
-            m_Actor.lootItem(item);
-        }*/
+        if(CrossPlatformInputManager.GetButtonDown("Grab") && this.hasItemInRange()){
+            Item item = this.getClosestItemInRange();
+            m_actor.grabItem(item);
+        }
     }
+
+    private void handleDropItem(){
+        if(CrossPlatformInputManager.GetButtonDown("DropItem")){
+            m_actor.dropItem();
+        }
+    }
+
+	public bool hasItemInRange(){
+		return itemsInRange.Count > 0;
+	}
+
+	public Item getClosestItemInRange(){
+		Item closestItem = null;
+		float shortestDistance = 1000f;
+		foreach(Item item in itemsInRange){
+			float distance = Vector3.Distance(transform.position, item.transform.position);
+			if(distance < shortestDistance){
+				closestItem = item;
+				shortestDistance = distance; 
+			}
+		}
+		return closestItem;
+	}
 }

@@ -8,6 +8,16 @@ public class Actor : MonoBehaviour {
     [Header("Parameters")]
     [Tooltip("Info/Parameters/Settings for this Actor")]
     public int totalHealth;
+    public Item rightHandItem;
+    public Item leftHandItem;
+    #endregion
+
+    #region Components
+    [Header("Components")]
+    [SerializeField]
+    private Transform rightHand;
+    [SerializeField]
+    private Transform leftHand;
     #endregion
 
     #region State
@@ -26,6 +36,36 @@ public class Actor : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public bool grabItem(Item item){
+        if(rightHandItem == null && rightHand != null){
+            rightHandItem = item;
+            item.bringToHand(rightHand);
+            return true;
+        } else if(leftHandItem == null && leftHand != null){
+            leftHandItem = item;
+            item.bringToHand(leftHand);
+            return true;
+        }
+
+        return false;
+    }
+
+    public bool dropItem(){
+        if(leftHandItem != null){
+            leftHandItem.dropItem();
+            leftHandItem.transform.parent = null;
+            leftHandItem = null;
+            return true;
+        } else if(rightHandItem != null){
+            rightHandItem.dropItem();
+            rightHandItem.transform.parent = null;
+            rightHandItem = null;
+            return true;
+        }
+
+        return false;
+    }
 
     public bool lootItem(Item item){
         if(inventory != null){

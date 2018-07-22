@@ -23,8 +23,15 @@ public class Item : MonoBehaviour, IEntity {
     }
     #endregion
 
+    #region State
+    [Header("State")]
+    public bool isCurrentlyHeld = false;
+    #endregion
+
     #region Components
     UI_ToolTip tooltip;
+    CapsuleCollider capsuleCollider;
+    MeshCollider meshCollider;
     #endregion
 
 
@@ -42,6 +49,8 @@ public class Item : MonoBehaviour, IEntity {
 	// Use this for initialization
 	void Start () {
         tooltip = GetComponentInChildren<UI_ToolTip>();
+        capsuleCollider = GetComponent<CapsuleCollider>();
+        meshCollider = GetComponent<MeshCollider>();
 	}
 	
 	// Update is called once per frame
@@ -50,14 +59,28 @@ public class Item : MonoBehaviour, IEntity {
 	}
 
     public void bringToInventory(GameObject inventory){
-        GetComponent<Rigidbody>().isKinematic = true;
-        GetComponent<CapsuleCollider>().enabled = false;
+        prepareForBeingTaken();
+
         StartCoroutine(Util_TransformManipulation.smoothMovement(this.gameObject, this.transform.position, inventory.transform.position, 0.1f));
         StartCoroutine(Util_TransformManipulation.lerpObjToScale(this.gameObject, new Vector3(0.01f, 0.01f, 0.01f), 1f));
     }
+    
+    public void bringToHand(Transform hand){
+        prepareForBeingTaken();
+
+        this.transform.up = hand.transform.forward;
+        StartCoroutine(Util_TransformManipulation.smoothMovement(this.gameObject, this.transform.position, hand.transform.position, 0.1f));
+        this.transform.parent = hand;
+    }
+
+    public void dropItem(){
+        isCurrentlyHeld = false;
+        enableColliders();
+        GetComponent<Rigidbody>().isKinematic = false;
+    }
 
     public void displayUIPrompt(){
-        if(tooltip != null){
+        if(tooltip != null && !isCurrentlyHeld){
             tooltip.displayTooltip();
         }
     }
@@ -65,6 +88,31 @@ public class Item : MonoBehaviour, IEntity {
     public void hideUIPrompt(){
         if(tooltip != null){
             tooltip.hideTooltip();
+        }
+    }
+
+    private void prepareForBeingTaken(){
+        hideUIPrompt();
+        isCurrentlyHeld = true;
+        GetComponent<Rigidbody>().isKinematic = true;
+        disableColliders();
+    }
+
+    private void enableColliders(){
+        if(capsuleCollider != null){
+            capsuleCollider.enabled = true;    
+        }
+        if(meshCollider != null){
+            meshCollider.enabled = true;
+        }
+    }
+
+    private void disableColliders(){
+        if(capsuleCollider != null){
+            capsuleCollider.enabled = false;    
+        }
+        if(meshCollider != null){
+            meshCollider.enabled = false;
         }
     }
 }
