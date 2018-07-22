@@ -595,6 +595,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isDisplaying: 0
+  playerInventory: {fileID: 1333142782}
 --- !u!1 &262146056 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1078650803368350, guid: ca2a18daa91a3b04ca17d8b3c0c192d8,
