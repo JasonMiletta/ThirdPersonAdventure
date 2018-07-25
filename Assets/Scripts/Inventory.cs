@@ -8,7 +8,7 @@ public class Inventory : MonoBehaviour {
     [Header("Parameters")]
     [Tooltip("Info/Parameters/Settings for this Actor")]
 	public int maxCapacity = 10;
-	public List<GameObject> inventoryList;
+	public List<Item> inventoryList;
 	#endregion
 
 	#region State
@@ -27,7 +27,7 @@ public class Inventory : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		inventoryList = new List<GameObject>();
+		inventoryList = new List<Item>();
 	}
 	
 	// Update is called once per frame
@@ -39,7 +39,7 @@ public class Inventory : MonoBehaviour {
 	/// </summary>
 	public bool addNewItem(Item newItem){
 		if((currentCapacity + newItem.weight) < maxCapacity){
-			inventoryList.Add(newItem.gameObject);
+			inventoryList.Add(newItem);
 			currentCapacity += newItem.weight;
 			
             if(OnItemAdded != null){OnItemAdded(newItem, this);}
@@ -49,7 +49,7 @@ public class Inventory : MonoBehaviour {
 		return false;
 	}
 
-	public GameObject retrieveItem(int itemIndex){
+	public Item retrieveItem(int itemIndex){
 		if(inventoryList.Count > itemIndex){
 			return inventoryList[itemIndex];
 		}

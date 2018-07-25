@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityStandardAssets.CrossPlatformInput;
 
 public class UI_InventoryController : MonoBehaviour {
@@ -13,17 +14,22 @@ public class UI_InventoryController : MonoBehaviour {
 	#region Components
 	private Animator animator;
 	public Inventory playerInventory;
+	private List<UI_InventoryPanel> inventoryPanels = new List<UI_InventoryPanel>();
+	[SerializeField]
+	private GameObject InventoryPanelPrefab;
+	[SerializeField]
+	private GridLayoutGroup inventoryGridLayoutGroup;
 	#endregion
 
 	 void OnEnable()
     {
-		Inventory.OnItemAdded += handleOnItemAddedEvent;
-		Inventory.OnItemRemoved += handleOnItemRemovedEvent;
+		//Inventory.OnItemAdded += handleOnItemAddedEvent;
+		//Inventory.OnItemRemoved += handleOnItemRemovedEvent;
     }
 
 	void OnDisable(){
-		Inventory.OnItemAdded -= handleOnItemAddedEvent;
-		Inventory.OnItemRemoved -= handleOnItemRemovedEvent;
+		//Inventory.OnItemAdded -= handleOnItemAddedEvent;
+		//Inventory.OnItemRemoved -= handleOnItemRemovedEvent;
 	}
 
 	// Use this for initialization
@@ -39,6 +45,26 @@ public class UI_InventoryController : MonoBehaviour {
 		handleInventoryInput();
 	}
 	
+	private void createInventoryUIPanels(){
+		List<Item> inventoryItems = playerInventory.inventoryList;
+		foreach(Item item in inventoryItems){
+			GameObject newPanel = Instantiate(InventoryPanelPrefab, inventoryGridLayoutGroup.transform);
+			UI_InventoryPanel inventoryPanel = newPanel.GetComponent<UI_InventoryPanel>();
+			if(inventoryPanel !=  null){
+				inventoryPanel.m_itemPanelName = item.name;
+				inventoryPanel.m_item = item;
+			}
+			inventoryPanels.Add(inventoryPanel);
+		}
+	}
+
+	private void cleanupInventoryUIPanels(){
+		foreach(UI_InventoryPanel panel in inventoryPanels){
+			Destroy(panel.gameObject);
+			inventoryPanels.Remove(panel);
+		}
+	}
+
     private void handleInventoryInput(){
         if(CrossPlatformInputManager.GetButtonDown("Inventory")){
             if(isDisplaying){
@@ -50,6 +76,7 @@ public class UI_InventoryController : MonoBehaviour {
     }
 
 	private void showInventory(){
+		createInventoryUIPanels();
 		isDisplaying = true;
 		animator.SetBool("isDisplaying", true);
 	}
@@ -57,6 +84,7 @@ public class UI_InventoryController : MonoBehaviour {
 	private void hideInventory(){
 		isDisplaying = false;
 		animator.SetBool("isDisplaying", false);
+		cleanupInventoryUIPanels();
 	}
 
 	private void handleOnItemAddedEvent(Item itemAdded, Inventory inventory){
