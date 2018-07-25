@@ -42,10 +42,6 @@ public class Actor : MonoBehaviour {
             rightHandItem = item;
             item.bringToHand(rightHand);
             return true;
-        } else if(leftHandItem == null && leftHand != null){
-            leftHandItem = item;
-            item.bringToHand(leftHand);
-            return true;
         }
 
         return false;
@@ -71,7 +67,6 @@ public class Actor : MonoBehaviour {
         if(inventory != null){
             item.bringToInventory(inventory.backpack);
             inventory.addNewItem(item);
-            //item.gameObject.transform.parent = this.transform;
             return true;
         }
 

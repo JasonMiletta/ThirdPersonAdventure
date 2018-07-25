@@ -4,13 +4,11 @@ interface IEntity
    string apiName
    {
       get;
-      set;
    }
 
    string displayName
    {
       get;
-      set;
    }
 
     void Initialize();

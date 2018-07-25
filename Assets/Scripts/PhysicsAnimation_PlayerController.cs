@@ -19,7 +19,26 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
 	#region State
     [Header("State attributes")]
 	List<Item> itemsInRange = new List<Item>();
+    private bool isInventoryOpen = false;
 	#endregion
+
+    /// <summary>
+    /// This function is called when the object becomes enabled and active.
+    /// </summary>
+    void OnEnable()
+    {
+        UI_InventoryController.OnInventoryOpened += handleInventoryOpened;
+        UI_InventoryController.OnInventoryClosed += handleInventoryClosed;
+    }
+
+    /// <summary>
+    /// This function is called when the behaviour becomes disabled or inactive.
+    /// </summary>
+    void OnDisable()
+    {
+        UI_InventoryController.OnInventoryOpened -= handleInventoryOpened;
+        UI_InventoryController.OnInventoryClosed -= handleInventoryClosed;
+    }
 
 	/// <summary>
 	/// OnTriggerEnter is called when the Collider other enters the trigger.
@@ -66,24 +85,28 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
 
     private void Update()
     {
-        if (!m_Jump)
-        {
-            m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
-            if(m_Jump){
-                human.jump();
+        if(!isInventoryOpen){
+            if (!m_Jump)
+            {
+                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
+                if(m_Jump){
+                    human.jump();
+                }
             }
+            
+            handleDropItem();
+            handleInteract();
         }
-        
-        handleDropItem();
-        handleInteract();
     }
 
 
     // Fixed update is called in sync with physics
     private void FixedUpdate()
     {
-        movement();
-        handleSit();
+        if(!isInventoryOpen){
+            movement();
+            handleSit();
+        }
     }
 
     private void movement(){
@@ -125,10 +148,10 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
     private void handleInteract(){
         if(CrossPlatformInputManager.GetButtonDown("Grab") && this.hasItemInRange()){
             Item item = this.getClosestItemInRange();
-            if(item.isGrabbable){
-                m_actor.grabItem(item);
-            } else if(item.isLootable){
-                m_actor.lootItem(item);
+            if(item.isLootable){
+                if(m_actor.lootItem(item)){
+                    itemsInRange.Remove(item);
+                }
             }
         }
     }
@@ -155,4 +178,12 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
 		}
 		return closestItem;
 	}
+
+    private void handleInventoryOpened(){
+        isInventoryOpen = true;
+    }
+    
+    private void handleInventoryClosed(){
+        isInventoryOpen = false;
+    }
 }

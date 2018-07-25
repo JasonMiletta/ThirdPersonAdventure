@@ -14,22 +14,25 @@ public class UI_InventoryController : MonoBehaviour {
 	#region Components
 	private Animator animator;
 	public Inventory playerInventory;
+	public UI_InventoryPreviewController inventoryPreview;
 	private List<UI_InventoryPanel> inventoryPanels = new List<UI_InventoryPanel>();
 	[SerializeField]
 	private GameObject InventoryPanelPrefab;
 	[SerializeField]
 	private GridLayoutGroup inventoryGridLayoutGroup;
+
 	#endregion
 
-	 void OnEnable()
-    {
-		//Inventory.OnItemAdded += handleOnItemAddedEvent;
-		//Inventory.OnItemRemoved += handleOnItemRemovedEvent;
+	#region Events
+    public delegate void UIInventoryEvent();
+    public static event UIInventoryEvent OnInventoryOpened;
+    public static event UIInventoryEvent OnInventoryClosed;
+	#endregion
+
+	 void OnEnable(){
     }
 
 	void OnDisable(){
-		//Inventory.OnItemAdded -= handleOnItemAddedEvent;
-		//Inventory.OnItemRemoved -= handleOnItemRemovedEvent;
 	}
 
 	// Use this for initialization
@@ -44,24 +47,23 @@ public class UI_InventoryController : MonoBehaviour {
 	void Update () {
 		handleInventoryInput();
 	}
+
+	public void selectItem(Item item){
+		inventoryPreview.showItem(item);
+	}
 	
 	private void createInventoryUIPanels(){
 		List<Item> inventoryItems = playerInventory.inventoryList;
 		foreach(Item item in inventoryItems){
+			InventoryPanelPrefab.GetComponent<UI_InventoryPanel>().m_item = item;
 			GameObject newPanel = Instantiate(InventoryPanelPrefab, inventoryGridLayoutGroup.transform);
 			UI_InventoryPanel inventoryPanel = newPanel.GetComponent<UI_InventoryPanel>();
 			if(inventoryPanel !=  null){
 				inventoryPanel.m_itemPanelName = item.name;
 				inventoryPanel.m_item = item;
+				inventoryPanel.inventoryController = this;
 			}
 			inventoryPanels.Add(inventoryPanel);
-		}
-	}
-
-	private void cleanupInventoryUIPanels(){
-		foreach(UI_InventoryPanel panel in inventoryPanels){
-			Destroy(panel.gameObject);
-			inventoryPanels.Remove(panel);
 		}
 	}
 
@@ -69,6 +71,7 @@ public class UI_InventoryController : MonoBehaviour {
         if(CrossPlatformInputManager.GetButtonDown("Inventory")){
             if(isDisplaying){
 				hideInventory();
+				inventoryPreview.hideItem();
 			} else {
 				showInventory();
 			}
@@ -76,22 +79,19 @@ public class UI_InventoryController : MonoBehaviour {
     }
 
 	private void showInventory(){
+		if(OnInventoryOpened != null){
+			OnInventoryOpened();
+		}
 		createInventoryUIPanels();
 		isDisplaying = true;
 		animator.SetBool("isDisplaying", true);
 	}
 
 	private void hideInventory(){
+		if(OnInventoryClosed != null){
+			OnInventoryClosed();
+		}
 		isDisplaying = false;
 		animator.SetBool("isDisplaying", false);
-		cleanupInventoryUIPanels();
-	}
-
-	private void handleOnItemAddedEvent(Item itemAdded, Inventory inventory){
-		//TODO Create Item inventory node
-	}
-
-	private void handleOnItemRemovedEvent(Item itemRemoved, Inventory inventory){
-		//TODO Remove item inventory node
 	}
 }

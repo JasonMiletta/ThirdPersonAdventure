@@ -16,20 +16,36 @@ public class UI_InventoryPanel : MonoBehaviour {
 	public Text PanelTitleComponent;
 	public Image PanelIconComponent;
 	public int PanelItemCount;
+	public UI_InventoryController inventoryController;
 	#endregion
+
+	/// <summary>
+	/// This function is called when the behaviour becomes disabled or inactive.
+	/// </summary>
+	void OnDisable()
+	{
+		Destroy(this.gameObject);
+	}
 
 	// Use this for initialization
 	void Start () {
-		PanelTitleComponent = GetComponent<Text>();
-		PanelIconComponent = GetComponent<Image>();
+		PanelTitleComponent = GetComponentInChildren<Text>();
+		PanelIconComponent = GetComponentInChildren<Image>();
 
 		if(PanelTitleComponent != null){
-			PanelTitleComponent.text = m_itemPanelName;
+			PanelTitleComponent.text = m_item.displayName;
+		}
+		if(inventoryController == null){
+			inventoryController = GetComponentInParent<UI_InventoryController>();
 		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
+	}
+
+	public void selectItem(){
+		inventoryController.selectItem(m_item);
 	}
 }

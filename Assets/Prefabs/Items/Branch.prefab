@@ -236,9 +236,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 386416458b4124342a3f7ab81fe71a8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_apiName: Branch
+  m_displayName: Branch
   isGrabbable: 0
   isLootable: 1
   weight: 1
+  isCurrentlyHeld: 0
 --- !u!114 &114846625376081864
 MonoBehaviour:
   m_ObjectHideFlags: 1

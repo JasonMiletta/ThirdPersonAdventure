@@ -7,16 +7,16 @@ public class Item : MonoBehaviour, IEntity {
     #region Info
     [Header("Parameters")]
     [Tooltip("Info/Parameters/Settings for this Actor")]
+    public string m_apiName;
+    public string m_displayName;
     public bool isGrabbable = false;
     public bool isLootable = true;
     public int weight = 1;
     public string apiName{
-        get;
-        set;
+        get {return m_apiName;}
     }
     public string displayName{
-        get;
-        set;
+        get {return m_displayName;}
     }
     public bool isInteractable{
         get;set;
