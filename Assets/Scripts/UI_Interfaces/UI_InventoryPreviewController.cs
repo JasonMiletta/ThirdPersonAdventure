@@ -40,6 +40,10 @@ public class UI_InventoryPreviewController : MonoBehaviour {
 	}
 
 	public void showItem(Item item){
+		if(m_item != null){
+			hidePreviewPanel();
+			cleanupCurrentItem();
+		}
 		ItemTitleComponent.text = item.displayName;
 		item.gameObject.transform.parent = ItemPreviewTransform;
 		item.gameObject.transform.localPosition = Vector3.zero;
@@ -52,6 +56,12 @@ public class UI_InventoryPreviewController : MonoBehaviour {
 
 	public void hideItem(){
 		hidePreviewPanel();
+	}
+
+	private void cleanupCurrentItem(){
+		m_item.gameObject.transform.localPosition += Vector3.forward;
+		m_itemPanelName = null;
+		m_item = null;
 	}
 
 	private void showPreviewPanel(){
