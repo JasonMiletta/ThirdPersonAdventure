@@ -21,6 +21,8 @@ public class Item : MonoBehaviour, IEntity {
     public bool isInteractable{
         get;set;
     }
+    public bool isConsumable;
+    public bool isEquipable;
     #endregion
 
     #region State
@@ -32,6 +34,8 @@ public class Item : MonoBehaviour, IEntity {
     UI_ToolTip tooltip;
     CapsuleCollider capsuleCollider;
     MeshCollider meshCollider;
+    Item_Consumable consumable;
+    Item_Equipment equipable;
     #endregion
 
 
@@ -51,12 +55,33 @@ public class Item : MonoBehaviour, IEntity {
         tooltip = GetComponentInChildren<UI_ToolTip>();
         capsuleCollider = GetComponent<CapsuleCollider>();
         meshCollider = GetComponent<MeshCollider>();
+        
+        consumable = GetComponent<Item_Consumable>();
+        isConsumable = consumable != null;
+        equipable = GetComponent<Item_Equipment>();
+        isEquipable = equipable != null;
+        
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    public float getHungerValue(){
+        return isConsumable ? consumable.hungerValue : 0;
+    }
+    public float getThirstValue(){
+        return isConsumable ? consumable.thirstValue : 0;
+    }
+    
+    public float getStaminaValue(){
+        return isConsumable ? consumable.staminaValue : 0;
+    }
+
+    public float getSleepValue(){
+        return isConsumable ? consumable.sleepValue : 0;
+    }
 
     public void bringToInventory(GameObject inventory){
         prepareForBeingTaken();

@@ -8,6 +8,10 @@ public class Actor : MonoBehaviour {
     [Header("Parameters")]
     [Tooltip("Info/Parameters/Settings for this Actor")]
     public int totalHealth;
+    public float maxHunger;
+    public float maxThirst;
+    public float maxStamina;
+    public float maxSleep;
     public Item rightHandItem;
     public Item leftHandItem;
     #endregion
@@ -21,6 +25,10 @@ public class Actor : MonoBehaviour {
     #endregion
 
     #region State
+    public float currentHunger;
+    public float currentThirst;
+    public float currentStamina;
+    public float currentSleep;
     private int currentHealth; 
     private Inventory inventory;
     #endregion
@@ -72,4 +80,55 @@ public class Actor : MonoBehaviour {
 
         return false;
     }
+
+    #region Meters
+    public bool consumeItem(Item item){
+        if(item.isConsumable){
+            modifyHunger(item.getHungerValue());
+            modifyThirst(item.getThirstValue());
+            modifyStamina(item.getStaminaValue());
+            modifySleep(item.getSleepValue());
+            return true;
+        }
+        return false;
+    }
+
+    private void modifyHunger(float hungerAmount){
+        currentHunger += hungerAmount;
+        if(currentHunger > maxHunger){
+            currentHunger = maxHunger;
+        } else if(currentHunger < 0){
+            currentHunger = 0;
+        }
+    }
+
+    private void modifyThirst(float thirstAmount){
+        currentThirst += thirstAmount;
+        if(currentThirst > maxThirst){
+            currentThirst = maxHunger;
+        } else if(currentThirst < 0){
+            currentThirst = 0;
+        }
+    }
+
+    private void modifyStamina(float staminaAmount){
+        currentStamina += staminaAmount;
+        if(currentStamina > maxStamina){
+            currentStamina = maxStamina;
+        } else if(currentStamina < 0){
+            currentStamina = 0;
+        }
+    }
+    
+    private void modifySleep(float sleepAmount){
+        currentSleep += sleepAmount;
+        if(currentSleep > maxSleep){
+            currentSleep = maxSleep;
+        } else if(currentSleep < 0){
+            currentSleep = 0;
+        }
+    }
+    #endregion
+
+
 }
