@@ -81,6 +81,13 @@ public class Actor : MonoBehaviour {
         return false;
     }
 
+    public Transform getInventoryTransform(){
+        if(inventory != null){
+            return inventory.backpack.transform;
+        }
+        return null;
+    }
+
     #region Meters
     public bool consumeItem(Item item){
         if(item.isConsumable){
