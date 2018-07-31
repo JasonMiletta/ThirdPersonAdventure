@@ -28,6 +28,7 @@ public class Item : MonoBehaviour, IEntity {
     #region State
     [Header("State")]
     public bool isCurrentlyHeld = false;
+    public bool isCurrentlyEquipped = false;
     #endregion
 
     #region Components

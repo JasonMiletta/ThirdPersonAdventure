@@ -55,7 +55,9 @@ public class Actor_Equipment : MonoBehaviour {
 				return false;
 			} else {
 				Helmet = equipment;
+				equipment.transform.localScale = Vector3.one;
 				equipment.gameObject.transform.parent = m_HeadTransform;
+				equipment.transform.localPosition = Vector3.zero;
 				return true;
 			}
 		} else if(placement == Item_Equipment.Placement.Torso){
@@ -63,17 +65,23 @@ public class Actor_Equipment : MonoBehaviour {
 				return false;
 			} else {
 				Torso = equipment;
+				equipment.transform.localScale = Vector3.one;
 				equipment.gameObject.transform.parent = m_HeadTransform;
+				equipment.transform.localPosition = Vector3.zero;
 				return true;
 			}
 			
 		} else if(placement == Item_Equipment.Placement.Arm){
 			if(RightArm == null){
 				RightArm = equipment;
+				equipment.transform.localScale = Vector3.one;
 				equipment.gameObject.transform.parent = m_RightArmTransform;
+				equipment.transform.localPosition = Vector3.zero;
 			}else if(LeftArm == null){
 				LeftArm = equipment;
+				equipment.transform.localScale = Vector3.one;
 				equipment.gameObject.transform.parent = m_LeftArmTransform;
+				equipment.transform.localPosition = Vector3.zero;
 			} else {
 				return false;
 			}
@@ -84,7 +92,9 @@ public class Actor_Equipment : MonoBehaviour {
 				return false;
 			} else {
 				Legs = equipment;
+				equipment.transform.localScale = Vector3.one;
 				equipment.gameObject.transform.parent = m_LegsTransform;
+				equipment.transform.localPosition = Vector3.zero;
 				return true;
 			}
 
@@ -93,7 +103,9 @@ public class Actor_Equipment : MonoBehaviour {
 				return false;
 			} else {
 				RightHand = equipment;
+				equipment.transform.localScale = Vector3.one;
 				equipment.gameObject.transform.parent = m_RightHandTransform;
+				equipment.transform.localPosition = Vector3.zero;
 				return true;
 			}
 
@@ -102,7 +114,9 @@ public class Actor_Equipment : MonoBehaviour {
 				return false;
 			} else {
 				LeftHand = equipment;
+				equipment.transform.localScale = Vector3.one;
 				equipment.gameObject.transform.parent = m_LeftHandTransform;
+				equipment.transform.localPosition = Vector3.zero;
 				return true;
 			}
 		}
@@ -114,6 +128,11 @@ public class Actor_Equipment : MonoBehaviour {
 	public bool unEquipItem(Item_Equipment.Placement placement){
 
 		return false;
+	}
+
+	public bool unEquipItem(Item item){
+			//TODO Find the item in its matching slot and remove it from the Actor_Equipment
+			return false;
 	}
 	public bool unEquipHelmet(){
 		if(Helmet != null){

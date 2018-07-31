@@ -142,6 +142,19 @@ public class Actor : MonoBehaviour {
         return false;
     }
 
+
+    /// <summary>
+    /// Attempts to unequip the provided item
+    /// </summary>
+    /// <param name="item">Item that we want to unequip</param>
+    /// <returns>Returns true on success, false on failure, no item, or no Actor_Equipment</returns>
+    public bool unEquipItem(Item item){
+        if(m_actorEquipment != null){
+            return m_actorEquipment.unEquipItem(item);
+        }
+        return false;
+    }
+
     #region Meters
     public bool consumeItem(Item item){
         if(item.isConsumable){

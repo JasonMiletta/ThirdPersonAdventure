@@ -442,16 +442,41 @@ Prefab:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 223626001106796286, guid: 5e6b5106a6c415d4ab7991bc18c6c779,
-        type: 2}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 282840813}
     - target: {fileID: 114418500066270000, guid: 5e6b5106a6c415d4ab7991bc18c6c779,
         type: 2}
       propertyPath: playerInventory
       value: 
       objectReference: {fileID: 1333142782}
+    - target: {fileID: 223626001106796286, guid: 5e6b5106a6c415d4ab7991bc18c6c779,
+        type: 2}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 282840813}
+    - target: {fileID: 224355477239694428, guid: 5e6b5106a6c415d4ab7991bc18c6c779,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 12.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 224689283443788736, guid: 5e6b5106a6c415d4ab7991bc18c6c779,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224689283443788736, guid: 5e6b5106a6c415d4ab7991bc18c6c779,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224689283443788736, guid: 5e6b5106a6c415d4ab7991bc18c6c779,
+        type: 2}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 224689283443788736, guid: 5e6b5106a6c415d4ab7991bc18c6c779,
+        type: 2}
+      propertyPath: m_AnchoredPosition.y
+      value: 12.5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 5e6b5106a6c415d4ab7991bc18c6c779, type: 2}
   m_IsPrefabParent: 0
@@ -599,12 +624,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8711c356e4e748409fc83570dc1bbbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lockCursor: 1
+  lockCursor: 0
   mouseSensitivity: 10
-  target: {fileID: 1333142780}
-  dstFromTarget: 5
+  target: {fileID: 1445813092}
+  dstFromTarget: 2
   pitchMinMax: {x: -40, y: 85}
-  rotationSmoothTime: 0.05
+  rotationSmoothTime: 0.12
 --- !u!20 &282840813
 Camera:
   m_ObjectHideFlags: 0
@@ -763,6 +788,26 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 361f3a5ab9be0104d822b736f6eabdd5, type: 2}
   m_IsPrefabParent: 0
+--- !u!1 &326639205 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1254936737523776, guid: 554797b5a850d8a46b7ce1860a313210,
+    type: 2}
+  m_PrefabInternal: {fileID: 1788419722}
+--- !u!114 &326639212
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 326639205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0aa90547aa78e94a8d8b146f5b12ff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttackValue: 0
+  DefenseValue: 10
+  EquipmentType: 1
+  EquipmentPlacement: 1
 --- !u!4 &357063776 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000012727282144, guid: c26f1e4e3796d394d8d50364ab123588,
@@ -1059,6 +1104,7 @@ GameObject:
   - component: {fileID: 452298245}
   - component: {fileID: 452298244}
   - component: {fileID: 452298243}
+  - component: {fileID: 452298249}
   m_Layer: 9
   m_Name: Sword
   m_TagString: Untagged
@@ -1079,12 +1125,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_apiName: Sword
   m_displayName: Sword
-  isGrabbable: 1
+  isGrabbable: 0
   isLootable: 1
   weight: 1
   isConsumable: 0
   isEquipable: 0
   isCurrentlyHeld: 0
+  isCurrentlyEquipped: 0
 --- !u!54 &452298244
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1172,6 +1219,21 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &452298249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 452298242}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0aa90547aa78e94a8d8b146f5b12ff8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttackValue: 1
+  DefenseValue: 0
+  EquipmentType: 0
+  EquipmentPlacement: 0
 --- !u!4 &539639956 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000011605300422, guid: a86c864654770cb4ca9ef85852fde415,
@@ -1365,7 +1427,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fcb5aa6ff6818a49a340e6bb262bca3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distanceToDisplayTooltip: 1
+  distanceToDisplayTooltip: 2
   displayPositionOffset: {x: 0, y: 1, z: 0}
 --- !u!95 &605906987
 Animator:
@@ -2458,11 +2520,6 @@ MonoBehaviour:
     type: 2}
   m_PrefabInternal: {fileID: 1095933543}
   m_Script: {fileID: 11500000, guid: 744c04b5b7d4bff4095a8a3a8f897947, type: 3}
---- !u!4 &1333142780 stripped
-Transform:
-  m_PrefabParentObject: {fileID: 4002932961049802, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
-    type: 2}
-  m_PrefabInternal: {fileID: 1095933543}
 --- !u!114 &1333142782 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114977466127932532, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
@@ -3018,6 +3075,11 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: c39895ad818e696458b70f3503ec8d86, type: 2}
   m_IsPrefabParent: 0
+--- !u!4 &1445813092 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 4872794655603312, guid: 9f8d2fa80229b6a4a891e164657a2d9f,
+    type: 2}
+  m_PrefabInternal: {fileID: 1095933543}
 --- !u!1001 &1450011019
 Prefab:
   m_ObjectHideFlags: 0

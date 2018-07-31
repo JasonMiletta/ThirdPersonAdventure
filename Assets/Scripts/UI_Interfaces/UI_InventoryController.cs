@@ -51,6 +51,30 @@ public class UI_InventoryController : MonoBehaviour {
 	public void selectItem(Item item){
 		inventoryPreview.showItem(item);
 	}
+
+	public bool equipItem(Item item){
+		Actor inventoryActor = playerInventory.GetComponent<Actor>();
+		if(inventoryActor != null){
+			bool success = inventoryActor.equipItem(item);
+			if(success){
+				item.isCurrentlyEquipped = true;
+			}
+			return success;
+		}
+		return false;
+	}
+
+	public bool unequipItem(Item item){
+		Actor inventoryActor = playerInventory.GetComponent<Actor>();
+		if(inventoryActor != null){
+			bool success = inventoryActor.unEquipItem(item);
+			if(success){
+				item.isCurrentlyEquipped = false;
+			}
+			return success;
+		}
+		return false;
+	}
 	
 	private void createInventoryUIPanels(){
 		List<Item> inventoryItems = playerInventory.inventoryList;
