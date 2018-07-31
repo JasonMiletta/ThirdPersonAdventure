@@ -17,6 +17,7 @@ public class Actor_Equipment : MonoBehaviour {
 	#endregion
 
 	#region Components
+	private Actor m_ParentActor;
 	[Header("Body Placement Transforms")]
 	[SerializeField]
 	private Transform m_HeadTransform;
@@ -36,7 +37,7 @@ public class Actor_Equipment : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+		m_ParentActor = GetComponentInParent<Actor>(); 
 	}
 	
 	// Update is called once per frame
@@ -126,13 +127,18 @@ public class Actor_Equipment : MonoBehaviour {
 	}
 
 	public bool unEquipItem(Item_Equipment.Placement placement){
-
+		
 		return false;
 	}
 
 	public bool unEquipItem(Item item){
-			//TODO Find the item in its matching slot and remove it from the Actor_Equipment
-			return false;
+		if(m_ParentActor.getInventoryTransform() != null){
+			item.bringToInventory(m_ParentActor.getInventoryTransform().gameObject);
+			return true;
+		} else {
+			item.transform.parent = null;
+		}
+		return false;
 	}
 	public bool unEquipHelmet(){
 		if(Helmet != null){
