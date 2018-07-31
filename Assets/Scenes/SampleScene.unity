@@ -805,7 +805,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AttackValue: 0
-  DefenseValue: 10
+  DefenseValue: 1
   EquipmentType: 1
   EquipmentPlacement: 1
 --- !u!4 &357063776 stripped
