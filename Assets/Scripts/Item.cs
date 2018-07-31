@@ -68,6 +68,17 @@ public class Item : MonoBehaviour, IEntity {
 		
 	}
 
+    /// <summary>
+    /// Gets the Item_Equipment data attached to this item's object
+    /// </summary>
+    /// <returns>Item_Equipable or null if it doesn't exist</returns>
+    public Item_Equipment getItemEquipment(){
+        if(isEquipable && equipable != null){
+            return equipable;
+        }
+        return null;
+    }
+
     public float getHungerValue(){
         return isConsumable ? consumable.hungerValue : 0;
     }

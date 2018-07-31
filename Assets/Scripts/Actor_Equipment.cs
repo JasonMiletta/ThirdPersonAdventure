@@ -47,7 +47,8 @@ public class Actor_Equipment : MonoBehaviour {
 	/// <summary>
 	///Attempts to equip the provided item into the placement slot it belongs in. Return false if item is already equipped there
 	///</summary>
-	public bool equipItem(Item_Equipment equipment){
+	public bool equipItem(Item equipmentItem){
+		Item_Equipment equipment = equipmentItem.getItemEquipment();
 		Item_Equipment.Placement placement = equipment.EquipmentPlacement;
 		if(placement == Item_Equipment.Placement.Head){
 			if(Helmet != null){
@@ -110,6 +111,10 @@ public class Actor_Equipment : MonoBehaviour {
 		return false;
 	}
 
+	public bool unEquipItem(Item_Equipment.Placement placement){
+
+		return false;
+	}
 	public bool unEquipHelmet(){
 		if(Helmet != null){
 			Item helmetItem = Helmet.GetComponent<Item>();
@@ -120,7 +125,7 @@ public class Actor_Equipment : MonoBehaviour {
 	}
 
 	private void moveItemToInventory(Item item){
-		Transform inventoryTransform = GetComponet<Actor>().getInventoryTransform();
+		Transform inventoryTransform = GetComponent<Actor>().getInventoryTransform();
 		if(inventoryTransform != null){
 			item.gameObject.transform.parent = inventoryTransform;
 		} else {
