@@ -18,6 +18,7 @@ public class Actor : MonoBehaviour {
 
     #region Components
     [Header("Components")]
+    private PhysicsAnimation_Human m_physicsAnimation_Human;
     private Actor_Equipment m_actorEquipment;
     [SerializeField]
     private Transform rightHand;
@@ -26,6 +27,7 @@ public class Actor : MonoBehaviour {
     #endregion
 
     #region State
+    public bool isAlive;
     public float currentHunger;
     public float currentThirst;
     public float currentStamina;
@@ -37,14 +39,22 @@ public class Actor : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         currentHealth = totalHealth;
+        isAlive = true;
 
         inventory = GetComponent<Inventory>();
         m_actorEquipment = GetComponent<Actor_Equipment>();
+        m_physicsAnimation_Human = GetComponent<PhysicsAnimation_Human>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        if(currentHealth <= 0){
+            isAlive = false;
+        }
+        
+        if(isAlive != true){
+            killSelf();
+        }
 	}
 
     /// <summary>
@@ -165,6 +175,18 @@ public class Actor : MonoBehaviour {
             return true;
         }
         return false;
+    }
+
+    /// <summary>
+    /// Kills this actor. Yeesh this got dark quick
+    /// </summary>
+    public void killSelf(){
+        if(m_physicsAnimation_Human != null){
+            m_physicsAnimation_Human.stopAllForces();
+        }
+        if(m_actorEquipment != null){
+            //TODO Do we drop all equipment BOTW style or do we leave the body as a 'lootbox'
+        }
     }
 
     private void modifyHunger(float hungerAmount){

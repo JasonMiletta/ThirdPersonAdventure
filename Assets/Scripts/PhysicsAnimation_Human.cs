@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PhysicsAnimation_Human : MonoBehaviour {
 
-	public enum AnimationState {Standing, Walking, Running, Jumping, Falling, Sitting};
+	public enum AnimationState {None, Standing, Walking, Running, Jumping, Falling, Sitting};
 
 
 	[Header("Parameters")]
@@ -78,31 +78,34 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		Ray ray = new Ray (spineMid.transform.position, Vector3.down);
-		raysToDraw.Add(ray);
-        RaycastHit hit;
 
-		float standingRaycastDistance = standingHeight * 2;
-		bool didHit = Physics.Raycast(ray, out hit, standingRaycastDistance, (1 << LayerMask.NameToLayer("Terrain")));
-		spheresToDraw.Add(hit.point);
+		if(currentAnimationState = AnimationState.None){
+			Ray ray = new Ray (spineMid.transform.position, Vector3.down);
+			raysToDraw.Add(ray);
+			RaycastHit hit;
 
-		if(!didHit){
-			currentAnimationState = AnimationState.Falling;
-		}
+			float standingRaycastDistance = standingHeight * 2;
+			bool didHit = Physics.Raycast(ray, out hit, standingRaycastDistance, (1 << LayerMask.NameToLayer("Terrain")));
+			spheresToDraw.Add(hit.point);
 
-		
-		if(currentAnimationState == AnimationState.Standing){
-			standStraightCorrectionUpdate();
-		}
-		else if(currentAnimationState == AnimationState.Walking){
-			walkingUpdate(didHit, hit, spineMid.transform.position);
-		} else if(currentAnimationState == AnimationState.Sitting){
-			sittingUpdate(didHit, hit, spineMid.transform.position);
-		}
-		
-		if(currentAnimationState != AnimationState.Falling && currentAnimationState != AnimationState.Sitting){
-			forwardFacingRotationalCorrectionUpdate();
-			standingUpdate(didHit, hit, spineMid.transform.position);
+			if(!didHit){
+				currentAnimationState = AnimationState.Falling;
+			}
+
+			
+			if(currentAnimationState == AnimationState.Standing){
+				standStraightCorrectionUpdate();
+			}
+			else if(currentAnimationState == AnimationState.Walking){
+				walkingUpdate(didHit, hit, spineMid.transform.position);
+			} else if(currentAnimationState == AnimationState.Sitting){
+				sittingUpdate(didHit, hit, spineMid.transform.position);
+			}
+			
+			if(currentAnimationState != AnimationState.Falling && currentAnimationState != AnimationState.Sitting){
+				forwardFacingRotationalCorrectionUpdate();
+				standingUpdate(didHit, hit, spineMid.transform.position);
+			}
 		}
 	}
 
@@ -145,6 +148,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		}
 	}
 
+	/// <summary>
+	/// PlayerAction: update currentAnimationState to sitting. Forces to simulate sitting handled by sittingUpdate
+	/// </summary>
 	public void sit(){
 		if(currentAnimationState == AnimationState.Standing){
 			currentAnimationState = AnimationState.Sitting;
@@ -153,6 +159,17 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		}
 	}
 	
+
+	public void attackWithMainhand(){
+		float attackSwingStength = 1.0f;
+		//TODO This is probably where we want to build out TargetPoints to swing to.
+		Vector3 attackVector = forwardFacingTargetVector - rightHand.transform.position;
+	}
+
+	public void stopAllForces(){
+		currentAnimationState = AnimationState.None;
+	}
+
 	/// <summary>
 	/// This provides the necessary vertical force to keep the character standing at the correct height
 	///</summary>
