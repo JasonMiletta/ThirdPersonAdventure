@@ -79,7 +79,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	// Update is called once per frame
 	void FixedUpdate () {
 
-		if(currentAnimationState = AnimationState.None){
+		if(currentAnimationState != AnimationState.None){
 			Ray ray = new Ray (spineMid.transform.position, Vector3.down);
 			raysToDraw.Add(ray);
 			RaycastHit hit;
