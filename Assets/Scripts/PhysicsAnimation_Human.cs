@@ -16,6 +16,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	public float uprightTorque = 5f;
 	public float forwardFacingTorque = 5f;
 	public float jumpStrength = 1.0f;
+	public float attackStrength = 1.0f;
 	#endregion
 
 	[Header("Components")]
@@ -161,9 +162,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	
 
 	public void attackWithMainhand(){
-		float attackSwingStength = 1.0f;
 		//TODO This is probably where we want to build out TargetPoints to swing to.
-		Vector3 attackVector = forwardFacingTargetVector - rightHand.transform.position;
+		Vector3 attackVector = (rightHand.transform.position - forwardFacingTargetVector) * attackStrength;
+		rightHand.AddForce(attackVector, ForceMode.Impulse);
 	}
 
 	public void stopAllForces(){

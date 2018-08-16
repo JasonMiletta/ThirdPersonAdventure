@@ -106,6 +106,7 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
         if(!isInventoryOpen){
             movement();
             handleSit();
+            handleAttackInput();
         }
     }
 
@@ -153,6 +154,12 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
                     itemsInRange.Remove(item);
                 }
             }
+        }
+    }
+
+    private void handleAttackInput(){
+        if(CrossPlatformInputManager.GetButtonDown("Fire")){
+            human.attackWithMainhand();
         }
     }
 
