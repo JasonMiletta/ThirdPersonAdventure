@@ -163,7 +163,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 
 	public void attackWithMainhand(){
 		//TODO This is probably where we want to build out TargetPoints to swing to.
-		Vector3 attackVector = (rightHand.transform.position - forwardFacingTargetVector) * attackStrength;
+		Vector3 attackVector = (rightHand.transform.position + forwardFacingTargetVector) * attackStrength;
 		rightHand.AddForce(attackVector, ForceMode.Impulse);
 	}
 

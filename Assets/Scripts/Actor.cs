@@ -7,7 +7,7 @@ public class Actor : MonoBehaviour {
     #region Info
     [Header("Parameters")]
     [Tooltip("Info/Parameters/Settings for this Actor")]
-    public int totalHealth;
+    public float totalHealth;
     public float maxHunger;
     public float maxThirst;
     public float maxStamina;
@@ -32,7 +32,7 @@ public class Actor : MonoBehaviour {
     public float currentThirst;
     public float currentStamina;
     public float currentSleep;
-    private int currentHealth; 
+    public float currentHealth; 
     private Inventory inventory;
     #endregion
 
