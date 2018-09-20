@@ -41,4 +41,14 @@ public class Util_TransformManipulation {
         obj.transform.position = destination;
         yield return null;
     }
+
+    public static IEnumerator smoothForceToPosition(Rigidbody rigidBody, Vector3 source, Vector3 destination, float strength, float duration){
+        float startTime = Time.time;
+        while(Time.time < startTime + duration){
+            rigidBody.AddForce((destination - source) * strength, ForceMode.Force);
+            yield return null;
+        }
+
+        yield return null;
+    }
 }

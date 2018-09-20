@@ -21,6 +21,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 
 	[Header("Components")]
 	#region Components
+	public Transform ActionTargetTransform;
 	public Rigidbody hips;
 	public Rigidbody spineMid;
 	public Rigidbody leftThigh;
@@ -72,7 +73,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		if(hips != null){
-			forwardFacingTargetVector = hips.transform.forward;
+			setForwardFacingTargetVector(hips.transform.forward);
 		}
 		currentAnimationState = AnimationState.Standing;
 	}
@@ -122,7 +123,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 				currentAnimationState = AnimationState.Walking;
 			}
 
-			forwardFacingTargetVector = movementVector;
+			setForwardFacingTargetVector(movementVector);
 			hips.AddForce(movementVector * walkSpeed, ForceMode.Acceleration);
 		}
 	}
@@ -163,8 +164,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 
 	public void attackWithMainhand(){
 		//TODO This is probably where we want to build out TargetPoints to swing to.
-		Vector3 attackVector = (rightHand.transform.position + forwardFacingTargetVector) * attackStrength;
-		rightHand.AddForce(attackVector, ForceMode.Impulse);
+		//Vector3 attackVector = (rightHand.transform.position + ActionTargetTransform.position) * attackStrength;
+		//rightHand.AddForce(attackVector, ForceMode.Impulse);
+		StartCoroutine(Util_TransformManipulation.smoothForceToPosition(rightHand, rightHand.transform.position, ActionTargetTransform.position, attackStrength, 0.2f));
 	}
 
 	public void stopAllForces(){
@@ -274,4 +276,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		return currentFloorPosition;
 	}
 
+	private void setForwardFacingTargetVector(Vector3 forwardFacingVector){
+		forwardFacingTargetVector = forwardFacingVector.normalized;
+	}
 }
