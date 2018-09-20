@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_Player_Stat_Controller : MonoBehaviour {
 	#region Components
 	public Actor playerActor;
+	public Text HealthText;
+	public Text StaminaText;
+	public Text HungerText;
+	public Text ThirstText;
 	#endregion
 	#region State
 	public float currentHealthValue;
@@ -28,7 +33,12 @@ public class UI_Player_Stat_Controller : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		updateStatUI();
+	}
+
+	public void updateStatUI(){
 		updateStatValues();
+
 	}
 
 	private void updateStatValues(){
