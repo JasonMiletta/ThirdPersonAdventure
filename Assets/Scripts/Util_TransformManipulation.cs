@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Util_TransformManipulation {
+public class Util_TransformManipulation :MonoBehaviour {
 
     #region EVENTS
     public delegate void LerpEvent();
@@ -42,7 +43,14 @@ public class Util_TransformManipulation {
         yield return null;
     }
 
-    public static IEnumerator smoothForceToPosition(Rigidbody rigidBody, Vector3 source, Vector3 destination, float strength, float duration){
+    public IEnumerator smoothForceToPosition(Rigidbody rigidBody, Dictionary<Vector3, float> destinationToSpeedMap, float strength){
+        foreach(Vector3 destination in destinationToSpeedMap.Keys){
+            float duration = 5.0f;
+            //destinationToSpeedMap.TryGetValue(destination, out duration);
+            yield return StartCoroutine(smoothForceToPositionCoroutine(rigidBody, rigidBody.transform.position, destination, strength, duration));
+        }
+    }
+    public IEnumerator smoothForceToPositionCoroutine(Rigidbody rigidBody, Vector3 source, Vector3 destination, float strength, float duration){
         float startTime = Time.time;
         while(Time.time < startTime + duration){
             rigidBody.AddForce((destination - source) * strength, ForceMode.Force);

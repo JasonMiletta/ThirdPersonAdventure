@@ -21,7 +21,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 
 	[Header("Components")]
 	#region Components
-	public Transform ActionTargetTransform;
+	public Transform FrontActionTargetTransform;
+	public Transform RightActionTargetTransform;
+	public Transform LeftActionTargetTransform;
 	public Rigidbody hips;
 	public Rigidbody spineMid;
 	public Rigidbody leftThigh;
@@ -166,7 +168,10 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		//TODO This is probably where we want to build out TargetPoints to swing to.
 		//Vector3 attackVector = (rightHand.transform.position + ActionTargetTransform.position) * attackStrength;
 		//rightHand.AddForce(attackVector, ForceMode.Impulse);
-		StartCoroutine(Util_TransformManipulation.smoothForceToPosition(rightHand, rightHand.transform.position, ActionTargetTransform.position, attackStrength, 0.2f));
+		Dictionary<Vector3, float> animationDestinationMap = new Dictionary<Vector3, float>();
+		animationDestinationMap.Add(RightActionTargetTransform.position, 0.1f);
+		animationDestinationMap.Add(FrontActionTargetTransform.position, 0.25f);
+		StartCoroutine(smoothForceToPosition(rightHand, animationDestinationMap, attackStrength));
 	}
 
 	public void stopAllForces(){
@@ -279,4 +284,21 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	private void setForwardFacingTargetVector(Vector3 forwardFacingVector){
 		forwardFacingTargetVector = forwardFacingVector.normalized;
 	}
+
+    public IEnumerator smoothForceToPosition(Rigidbody rigidBody, Dictionary<Vector3, float> destinationToSpeedMap, float strength){
+        foreach(Vector3 destination in destinationToSpeedMap.Keys){
+            float duration;
+            destinationToSpeedMap.TryGetValue(destination, out duration);
+            yield return StartCoroutine(smoothForceToPositionCoroutine(rigidBody, rigidBody.transform.position, destination, strength, duration));
+        }
+    }
+    public IEnumerator smoothForceToPositionCoroutine(Rigidbody rigidBody, Vector3 source, Vector3 destination, float strength, float duration){
+        float startTime = Time.time;
+        while(Time.time < startTime + duration){
+            rigidBody.AddForce((destination - source) * strength, ForceMode.Force);
+            yield return null;
+        }
+
+        yield return null;
+    }
 }

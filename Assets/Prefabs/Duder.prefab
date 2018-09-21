@@ -148,6 +148,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1349846002881238
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4553116480027242}
+  m_Layer: 9
+  m_Name: FrontActionTargetTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1450024000978278
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,6 +309,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!1 &1699358192306322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 4061212815493028}
+  m_Layer: 9
+  m_Name: RightActionTargetTransform
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1747812936404616
 GameObject:
   m_ObjectHideFlags: 1
@@ -322,7 +352,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4540541849633452}
   m_Layer: 9
-  m_Name: ActionTargetTransform
+  m_Name: LeftActionTargetTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -384,6 +414,8 @@ Transform:
   - {fileID: 4834160274383348}
   - {fileID: 4313339604230254}
   - {fileID: 4042351180900932}
+  - {fileID: 4553116480027242}
+  - {fileID: 4061212815493028}
   - {fileID: 4540541849633452}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -402,6 +434,19 @@ Transform:
   m_Father: {fileID: 4002932961049802}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90.00001}
+--- !u!4 &4061212815493028
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1699358192306322}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2, y: -8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4002932961049802}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &4115172139122820
 Transform:
   m_ObjectHideFlags: 1
@@ -556,6 +601,19 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1757836944043082}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.0000002, y: 8, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 4002932961049802}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &4553116480027242
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1349846002881238}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 2, y: -0, z: 6}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -1767,7 +1825,9 @@ MonoBehaviour:
   forwardFacingTorque: 500
   jumpStrength: 500
   attackStrength: 500
-  ActionTargetTransform: {fileID: 4540541849633452}
+  FrontActionTargetTransform: {fileID: 4553116480027242}
+  RightActionTargetTransform: {fileID: 4061212815493028}
+  LeftActionTargetTransform: {fileID: 4540541849633452}
   hips: {fileID: 54506848663877172}
   spineMid: {fileID: 54683759616766228}
   leftThigh: {fileID: 54880019046155164}
