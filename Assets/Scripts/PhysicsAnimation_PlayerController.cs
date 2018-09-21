@@ -159,7 +159,10 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
 
     private void handleAttackInput(){
         if(CrossPlatformInputManager.GetButtonDown("Fire")){
-            human.attackWithMainhand();
+            human.swingWithRightHand();
+        }
+        if(CrossPlatformInputManager.GetButtonDown("Fire2")){
+            human.swingWithLeftHand();
         }
     }
 

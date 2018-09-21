@@ -164,14 +164,18 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	}
 	
 
-	public void attackWithMainhand(){
-		//TODO This is probably where we want to build out TargetPoints to swing to.
-		//Vector3 attackVector = (rightHand.transform.position + ActionTargetTransform.position) * attackStrength;
-		//rightHand.AddForce(attackVector, ForceMode.Impulse);
+	public void swingWithRightHand(){
 		Dictionary<Vector3, float> animationDestinationMap = new Dictionary<Vector3, float>();
 		animationDestinationMap.Add(RightActionTargetTransform.position, 0.1f);
 		animationDestinationMap.Add(FrontActionTargetTransform.position, 0.25f);
 		StartCoroutine(smoothForceToPosition(rightHand, animationDestinationMap, attackStrength));
+	}
+
+	public void swingWithLeftHand(){
+		Dictionary<Vector3, float> animationDestinationMap = new Dictionary<Vector3, float>();
+		animationDestinationMap.Add(LeftActionTargetTransform.position, 0.1f);
+		animationDestinationMap.Add(FrontActionTargetTransform.position, 0.25f);
+		StartCoroutine(smoothForceToPosition(leftHand, animationDestinationMap, attackStrength));
 	}
 
 	public void stopAllForces(){
