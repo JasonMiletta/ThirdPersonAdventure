@@ -164,18 +164,29 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	}
 	
 
+	/// <summary>
+	/// PlayerAction send series of force inputs to swing right hand
+	/// </summary>
 	public void swingWithRightHand(){
+		//TODO Enable dangerous collisions with right hand and start swinging
 		Dictionary<Vector3, float> animationDestinationMap = new Dictionary<Vector3, float>();
 		animationDestinationMap.Add(RightActionTargetTransform.position, 0.1f);
 		animationDestinationMap.Add(FrontActionTargetTransform.position, 0.25f);
 		StartCoroutine(smoothForceToPosition(rightHand, animationDestinationMap, attackStrength));
+		//TODO: Disable dangerous collisions with right hand when done
 	}
 
+
+	/// <summary>
+	/// PlayerAction send series of force inputs to swing left hand
+	/// </summary>
 	public void swingWithLeftHand(){
+		//TODO Enable dangerous collisions with hand and start swinging
 		Dictionary<Vector3, float> animationDestinationMap = new Dictionary<Vector3, float>();
 		animationDestinationMap.Add(LeftActionTargetTransform.position, 0.1f);
 		animationDestinationMap.Add(FrontActionTargetTransform.position, 0.25f);
 		StartCoroutine(smoothForceToPosition(leftHand, animationDestinationMap, attackStrength));
+		//TODO: Disable dangerous collisions with hand when done
 	}
 
 	public void stopAllForces(){
