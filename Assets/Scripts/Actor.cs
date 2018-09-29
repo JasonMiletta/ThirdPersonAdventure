@@ -189,6 +189,18 @@ public class Actor : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// Applys damage to this actor and checks for death
+    /// </summary>
+    /// <param name="damageValue"></param>
+    public void applyIncomingDamage(float damageValue){
+        Debug.Log("Taking Damage: " + damageValue);
+        currentHealth -= damageValue;
+        if(currentHealth <= 0){
+            killSelf();
+        }
+    }
+
     private void modifyHunger(float hungerAmount){
         currentHunger += hungerAmount;
         if(currentHunger > maxHunger){

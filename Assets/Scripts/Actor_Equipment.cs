@@ -107,6 +107,7 @@ public class Actor_Equipment : MonoBehaviour {
 				equipment.transform.localScale = Vector3.one;
 				equipment.gameObject.transform.parent = m_RightHandTransform;
 				equipment.transform.localPosition = Vector3.zero;
+				equipment.transform.localRotation = m_RightHandTransform.rotation;
 				return true;
 			}
 

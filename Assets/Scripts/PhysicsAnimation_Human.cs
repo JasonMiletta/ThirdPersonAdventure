@@ -24,6 +24,8 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	public Transform FrontActionTargetTransform;
 	public Transform RightActionTargetTransform;
 	public Transform LeftActionTargetTransform;
+	public Transform LeftFootTargetTransform;
+	public Transform RightFootTargetTransform;
 	public Rigidbody hips;
 	public Rigidbody spineMid;
 	public Rigidbody leftThigh;
