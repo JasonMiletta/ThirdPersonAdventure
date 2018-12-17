@@ -230,15 +230,15 @@ Prefab:
     m_Modifications:
     - target: {fileID: 4902224480289062, guid: d3064bfad2ae5e249b25514216e5ba51, type: 2}
       propertyPath: m_LocalPosition.x
-      value: 37.99
+      value: 9.18
       objectReference: {fileID: 0}
     - target: {fileID: 4902224480289062, guid: d3064bfad2ae5e249b25514216e5ba51, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 2.783
+      value: 4.44
       objectReference: {fileID: 0}
     - target: {fileID: 4902224480289062, guid: d3064bfad2ae5e249b25514216e5ba51, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 1.327
+      value: -0.09
       objectReference: {fileID: 0}
     - target: {fileID: 4902224480289062, guid: d3064bfad2ae5e249b25514216e5ba51, type: 2}
       propertyPath: m_LocalRotation.x
@@ -378,10 +378,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
-  m_Height: 1
+  m_Radius: 0.3895386
+  m_Height: 2.0860145
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.0026608706, y: 0.98511636, z: 0.006524056}
 --- !u!114 &112143928
 MonoBehaviour:
   m_ObjectHideFlags: 0
