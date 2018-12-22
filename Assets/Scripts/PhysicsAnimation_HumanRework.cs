@@ -192,7 +192,8 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 				}
 				leftFoot.AddRelativeTorque(Vector3.right * legStrength * 0.25f, ForceMode.Force);
 
-				rightArm.AddRelativeTorque(Vector3.right * armAnimStrength, ForceMode.Force);
+				rightArm.AddRelativeTorque(-Vector3.forward * armAnimStrength, ForceMode.Force);
+				rightForeArm.AddRelativeTorque(-Vector3.forward * armAnimStrength * 2f, ForceMode.Force);
 
 				rightThigh.AddRelativeTorque(-Vector3.right * legStrength, ForceMode.Force);
 				rightKnee.AddRelativeTorque(Vector3.right * legStrength * 0.5f, ForceMode.Force);
@@ -210,7 +211,8 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 				rightFoot.AddRelativeTorque(Vector3.right * legStrength * 0.25f, ForceMode.Force);
 
 
-				leftArm.AddRelativeTorque(Vector3.right * armAnimStrength, ForceMode.Force);
+				leftArm.AddRelativeTorque(-Vector3.forward * armAnimStrength, ForceMode.Force);
+				leftForeArm.AddRelativeTorque(-Vector3.forward * armAnimStrength * 2f, ForceMode.Force);
 				
 				leftThigh.AddRelativeTorque(-Vector3.right * legStrength, ForceMode.Force);
 				leftKnee.AddRelativeTorque(Vector3.right * legStrength * 0.5f, ForceMode.Force);
