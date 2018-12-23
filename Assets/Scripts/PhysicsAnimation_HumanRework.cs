@@ -54,6 +54,8 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 	[SerializeField]
 	private float footStrength = 1.0f;
 	[SerializeField]
+	private float legBackSwingModifier = 0.5f;
+	[SerializeField]
 	private float armAnimStrength = 1.0f;
 	[SerializeField]
 	private float legExtensionTimingModifier = 0.7f;
@@ -140,6 +142,14 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 		}
 	}
 
+	public void stand(){
+		if(currentAnimationState != AnimationState.Falling){
+			currentAnimationState = AnimationState.Falling;
+		} else {
+			currentAnimationState = AnimationState.Standing;
+		}
+	}
+
 	public void stopAllForces(){
 		currentAnimationState = AnimationState.None;
 	}
@@ -184,42 +194,51 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 			Vector3 forwardRotationVector = Vector3.Cross(forwardFacingTargetVector, Vector3.up);
 
 			if(stepWithLeftLeg){
-				//Step With left leg
+				//Step forward With left leg
+				leftThigh.AddRelativeTorque(Vector3.right * legStrength);
 				
-				leftThigh.AddRelativeTorque(Vector3.right * legStrength, ForceMode.Force);
+				//If on forward up swing of leg, bend the knee, otherwise we relax it to extend the leg and finish the forward step
 				if(!extendLeg){
-					leftKnee.AddRelativeTorque(-Vector3.right * legStrength * 0.5f, ForceMode.Force);
+					leftKnee.AddRelativeTorque(-Vector3.right * legStrength * 0.5f);
 				}
-				leftFoot.AddRelativeTorque(Vector3.right * legStrength * 0.25f, ForceMode.Force);
+				//Contract foot inward
+				leftFoot.AddRelativeTorque(Vector3.right * legStrength * 0.25f);
 
-				rightArm.AddRelativeTorque(-Vector3.forward * armAnimStrength, ForceMode.Force);
-				rightForeArm.AddRelativeTorque(-Vector3.forward * armAnimStrength * 2f, ForceMode.Force);
 
-				rightThigh.AddRelativeTorque(-Vector3.right * legStrength, ForceMode.Force);
-				rightKnee.AddRelativeTorque(Vector3.right * legStrength * 0.5f, ForceMode.Force);
-				rightFoot.AddRelativeTorque(-Vector3.right * legStrength * 0.25f, ForceMode.Force);
-				
-				raysToDraw.Add(new Ray(leftKnee.transform.transform.position, upForwardVector));
-				raysToDraw.Add(new Ray(rightKnee.transform.transform.position, backVector));
+				//extend and swing leg back
+				rightThigh.AddRelativeTorque(-Vector3.right * legStrength * legBackSwingModifier);
+				//keep knee extended out
+				rightKnee.AddRelativeTorque(Vector3.right * legStrength * legBackSwingModifier);
+				//Extend foot out
+				rightFoot.AddRelativeTorque(-Vector3.right * legStrength * legBackSwingModifier);
+
+				//Swing opposite Arm forward 
+				rightArm.AddRelativeTorque(-Vector3.forward * armAnimStrength);
+				rightForeArm.AddRelativeTorque(-Vector3.forward * armAnimStrength * 2f);
+				rightForeArm.AddForce(Vector3.up * armAnimStrength);
 			} else {
 				//Step With right leg
+				rightThigh.AddRelativeTorque(Vector3.right * legStrength);
 				
-				rightThigh.AddRelativeTorque(Vector3.right * legStrength, ForceMode.Force);
+				//If on forward up swing of leg, bend the knee, otherwise we relax it to extend the leg and finish the forward step
 				if(!extendLeg){
-					rightKnee.AddRelativeTorque(-Vector3.right * legStrength * 0.5f, ForceMode.Force);
+					rightKnee.AddRelativeTorque(-Vector3.right * legStrength * 0.5f);
 				}
-				rightFoot.AddRelativeTorque(Vector3.right * legStrength * 0.25f, ForceMode.Force);
+				//Contract foot inward
+				rightFoot.AddRelativeTorque(Vector3.right * legStrength * 0.25f);
 
 
-				leftArm.AddRelativeTorque(-Vector3.forward * armAnimStrength, ForceMode.Force);
-				leftForeArm.AddRelativeTorque(-Vector3.forward * armAnimStrength * 2f, ForceMode.Force);
-				
-				leftThigh.AddRelativeTorque(-Vector3.right * legStrength, ForceMode.Force);
-				leftKnee.AddRelativeTorque(Vector3.right * legStrength * 0.5f, ForceMode.Force);
-				leftFoot.AddRelativeTorque(-Vector3.right * legStrength * 0.25f, ForceMode.Force);
+				//extend and swing leg back
+				leftThigh.AddRelativeTorque(-Vector3.right * legStrength * legBackSwingModifier);
+				//keep knee extended out
+				leftKnee.AddRelativeTorque(Vector3.right * legStrength * legBackSwingModifier);
+				//Extend foot out
+				leftFoot.AddRelativeTorque(-Vector3.right * legStrength * legBackSwingModifier);
 
-				raysToDraw.Add(new Ray(rightKnee.transform.position, upForwardVector));
-				raysToDraw.Add(new Ray(leftKnee.transform.position, backVector));
+				//Swing opposite Arm forward
+				leftArm.AddRelativeTorque(-Vector3.forward * armAnimStrength);
+				leftForeArm.AddRelativeTorque(-Vector3.forward * armAnimStrength * 2f);
+				leftForeArm.AddForce(Vector3.up * armAnimStrength);
 			}
 		}
 	}
@@ -235,13 +254,13 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 		float zOffset = getCurrentFloorPosition().z - spineMid.transform.position.z;
 		appliedStandingForce.x = xOffset * uprightTorque;
 		appliedStandingForce.z = zOffset * uprightTorque;
-		spineMid.AddForce(appliedStandingForce, ForceMode.Force);
+		spineMid.AddForce(appliedStandingForce);
 
 		xOffset = getCurrentFloorPosition().x - hips.transform.position.x;
 		zOffset = getCurrentFloorPosition().z - hips.transform.position.z;
 		appliedStandingForce.x = xOffset * uprightTorque;
 		appliedStandingForce.z = zOffset * uprightTorque;
-		hips.AddForce(appliedStandingForce, ForceMode.Force);
+		hips.AddForce(appliedStandingForce);
 	}
 
 	/// <summary>

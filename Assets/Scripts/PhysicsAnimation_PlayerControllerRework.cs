@@ -127,6 +127,10 @@ public class PhysicsAnimation_PlayerControllerRework : MonoBehaviour {
         };
 #endif
 
+
+        if(Input.GetKey(KeyCode.Space)){
+            human.stand();
+        }
         // pass all parameters to the character control script
         human.moveInDirection(m_Move, isRunning);
         

@@ -1599,32 +1599,37 @@ PrefabInstance:
     - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
         type: 3}
       propertyPath: currentFloorPosition.x
-      value: 10.707596
+      value: 6.139847
       objectReference: {fileID: 0}
     - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
         type: 3}
       propertyPath: currentFloorPosition.y
-      value: 0.079479665
+      value: 0.2723295
       objectReference: {fileID: 0}
     - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
         type: 3}
       propertyPath: currentFloorPosition.z
-      value: 63.064613
+      value: 5.4858
       objectReference: {fileID: 0}
     - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
         type: 3}
       propertyPath: walkingStepPace
-      value: 0.65
+      value: 0.55
       objectReference: {fileID: 0}
     - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
         type: 3}
       propertyPath: armAnimStrength
-      value: 10000
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
         type: 3}
       propertyPath: legExtensionTimingModifier
       value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
+        type: 3}
+      propertyPath: runSpeed
+      value: 23
       objectReference: {fileID: 0}
     - target: {fileID: 349844671, guid: 8dbb9357d00c565409e2ea7cf862e914, type: 3}
       propertyPath: m_ConnectedAnchor.y
