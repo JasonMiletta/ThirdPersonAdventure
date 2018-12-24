@@ -98,6 +98,7 @@ public class PhysicsAnimation_PlayerControllerRework : MonoBehaviour {
     {
         if(!isInventoryOpen){
             movement();
+            handleAttackInput();
         }
     }
 
@@ -137,7 +138,6 @@ public class PhysicsAnimation_PlayerControllerRework : MonoBehaviour {
         m_Jump = false;
     }
 
-
     private void handleInteract(){
         if(CrossPlatformInputManager.GetButtonDown("Grab") && this.hasItemInRange()){
             Item item = this.getClosestItemInRange();
@@ -146,6 +146,15 @@ public class PhysicsAnimation_PlayerControllerRework : MonoBehaviour {
                     itemsInRange.Remove(item);
                 }
             }
+        }
+    }
+
+    private void handleAttackInput(){
+        if(CrossPlatformInputManager.GetButtonDown("Fire")){
+            human.swingWithRightHand();
+        }
+        if(CrossPlatformInputManager.GetButtonDown("Fire2")){
+            human.swingWithLeftHand();
         }
     }
 
