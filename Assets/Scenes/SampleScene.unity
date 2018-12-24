@@ -750,6 +750,12 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5.0005503, y: 0.15000004, z: 5.000001}
   m_Center: {x: 0.67022556, y: -0.07500002, z: 1.1600004}
+--- !u!4 &274152690 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1040529406, guid: 8dbb9357d00c565409e2ea7cf862e914,
+    type: 3}
+  m_PrefabInstance: {fileID: 760883830}
+  m_PrefabAsset: {fileID: 0}
 --- !u!20 &282840813 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 20430369699345310, guid: d3064bfad2ae5e249b25514216e5ba51,
@@ -1599,17 +1605,17 @@ PrefabInstance:
     - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
         type: 3}
       propertyPath: currentFloorPosition.x
-      value: -19.538143
+      value: 110.59488
       objectReference: {fileID: 0}
     - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
         type: 3}
       propertyPath: currentFloorPosition.y
-      value: 4.315241
+      value: 2.2783732
       objectReference: {fileID: 0}
     - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
         type: 3}
       propertyPath: currentFloorPosition.z
-      value: 124.85155
+      value: 36.22869
       objectReference: {fileID: 0}
     - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
         type: 3}
@@ -1650,6 +1656,31 @@ PrefabInstance:
         type: 3}
       propertyPath: runningStepPace
       value: 0.65
+      objectReference: {fileID: 0}
+    - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
+        type: 3}
+      propertyPath: FrontActionTargetTransform
+      value: 
+      objectReference: {fileID: 274152690}
+    - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
+        type: 3}
+      propertyPath: LeftActionTargetTransform
+      value: 
+      objectReference: {fileID: 2037863541}
+    - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
+        type: 3}
+      propertyPath: RightActionTargetTransform
+      value: 
+      objectReference: {fileID: 1203943821}
+    - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
+        type: 3}
+      propertyPath: walkingLegExtensionTimingModifier
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6510662038637712382, guid: 8dbb9357d00c565409e2ea7cf862e914,
+        type: 3}
+      propertyPath: runningLegExtensionTimingModifier
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 349844671, guid: 8dbb9357d00c565409e2ea7cf862e914, type: 3}
       propertyPath: m_ConnectedAnchor.y
@@ -2629,6 +2660,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 27bfb3979856b984bb7bbd493d0465ae, type: 3}
+--- !u!4 &1203943821 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1629868522, guid: 8dbb9357d00c565409e2ea7cf862e914,
+    type: 3}
+  m_PrefabInstance: {fileID: 760883830}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1254010004
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4670,6 +4707,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4000012727282144, guid: c26f1e4e3796d394d8d50364ab123588,
     type: 3}
   m_PrefabInstance: {fileID: 1688608571}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &2037863541 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1302830735, guid: 8dbb9357d00c565409e2ea7cf862e914,
+    type: 3}
+  m_PrefabInstance: {fileID: 760883830}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2097517428
 PrefabInstance:

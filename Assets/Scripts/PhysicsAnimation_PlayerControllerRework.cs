@@ -98,6 +98,7 @@ public class PhysicsAnimation_PlayerControllerRework : MonoBehaviour {
     {
         if(!isInventoryOpen){
             movement();
+            handleAttackInput();
         }
     }
 
@@ -118,6 +119,7 @@ public class PhysicsAnimation_PlayerControllerRework : MonoBehaviour {
         {
             // we use world-relative directions in the case of no main camera
             m_Move = v*Vector3.forward + h*Vector3.right;
+            m_Move = m_Move.normalized;
         }
         bool isRunning = false;
 #if !MOBILE_INPUT
@@ -149,6 +151,14 @@ public class PhysicsAnimation_PlayerControllerRework : MonoBehaviour {
         }
     }
 
+    private void handleAttackInput(){
+        if(CrossPlatformInputManager.GetButtonDown("Fire")){
+            human.swingWithRightHand();
+        }
+        if(CrossPlatformInputManager.GetButtonDown("Fire2")){
+            human.swingWithLeftHand();
+        }
+    }
     private void handleDropItem(){
         if(CrossPlatformInputManager.GetButtonDown("DropItem")){
             m_actor.dropItem();
