@@ -139,7 +139,6 @@ public class PhysicsAnimation_PlayerControllerRework : MonoBehaviour {
         m_Jump = false;
     }
 
-
     private void handleInteract(){
         if(CrossPlatformInputManager.GetButtonDown("Grab") && this.hasItemInRange()){
             Item item = this.getClosestItemInRange();
