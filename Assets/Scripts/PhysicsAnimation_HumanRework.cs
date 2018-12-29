@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PhysicsAnimation_HumanRework : MonoBehaviour {
 
-	public enum AnimationState {None, Standing, Walking, Running, Falling};
+	public enum AnimationState {None, Standing, Walking, Running, Falling, Jumping, Sitting};
 
 
 	[Header("Parameters")]
@@ -14,6 +14,7 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 	public float uprightTorque = 5f;
 	public float forwardFacingTorque = 5f;
 	public float attackStrength = 1.0f;
+	public float jumpStrength = 2.0f;
 	#endregion
 
 	[Header("Components")]
@@ -21,6 +22,7 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 	public Transform FrontActionTargetTransform;
 	public Transform RightActionTargetTransform;
 	public Transform LeftActionTargetTransform;
+
 	public Rigidbody hips;
 	public Rigidbody spineMid;
 	public Rigidbody leftThigh;
@@ -49,7 +51,11 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 	[SerializeField]
 	private float walkingStepPace;
 	[SerializeField]
+	private float walkingLegExtensionTimingModifier = 0.7f;
+	[SerializeField]
 	private float runningStepPace;
+	[SerializeField]
+	private float runningLegExtensionTimingModifier = 0.7f;
 	private float currentStepTime;
 	private bool stepWithLeftLeg = false;
 	[SerializeField]
@@ -61,7 +67,7 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 	[SerializeField]
 	private float armAnimStrength = 1.0f;
 	[SerializeField]
-	private float legExtensionTimingModifier = 0.7f;
+	private float footStepUpwardForceStrength = 1.0f;
 	#endregion
 	
     #region GIZMOS
@@ -142,6 +148,7 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 
 			setForwardFacingTargetVector(modifiedMovementVector);
 			hips.AddForce(modifiedMovementVector, ForceMode.Acceleration);
+			spineMid.AddForce(modifiedMovementVector, ForceMode.Acceleration);
 		}
 	}
 
@@ -152,7 +159,34 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 			currentAnimationState = AnimationState.Standing;
 		}
 	}
+
+	/// <summary>
+	/// PlayerAction: Fire off the necessary force to make the character jump.
+	/// </summary>
+	public void jump(){
+		currentAnimationState = AnimationState.Jumping;
+		spineMid.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+		hips.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+
+		if(stepWithLeftLeg){
+			rightKnee.AddForce(forwardFacingTargetVector * jumpStrength, ForceMode.Impulse);
+		} else {
+			leftKnee.AddForce(forwardFacingTargetVector * jumpStrength, ForceMode.Impulse);
+		}
+	}
+
+	/// <summary>
+	/// PlayerAction: update currentAnimationState to sitting. Forces to simulate sitting handled by sittingUpdate
+	/// </summary>
+	public void sit(){
+		if(currentAnimationState == AnimationState.Standing){
+			currentAnimationState = AnimationState.Sitting;
+		} else if(currentAnimationState == AnimationState.Sitting){
+			currentAnimationState = AnimationState.Standing;
+		}
+	}
 	
+
 	/// <summary>
 	/// PlayerAction send series of force inputs to swing right hand
 	/// </summary>
@@ -178,6 +212,7 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 		//TODO: Disable dangerous collisions with hand when done
 	}
 
+
 	public void stopAllForces(){
 		currentAnimationState = AnimationState.None;
 	}
@@ -199,9 +234,11 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 
 	private void walkingUpdate(bool didHit, RaycastHit hit, Vector3 position){
 		if(didHit){
+			var legExtensionTimingModifier = walkingLegExtensionTimingModifier;
 			var stepPace = walkingStepPace;
 			if(currentAnimationState == AnimationState.Running){
 				stepPace = runningStepPace;
+				legExtensionTimingModifier = runningLegExtensionTimingModifier;
 			}
 			currentStepTime += Time.deltaTime;
 			bool extendLeg = false;
@@ -212,12 +249,6 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 			} else if(currentStepTime > stepPace * legExtensionTimingModifier){
 				extendLeg = true;
 			}
-			
-			Vector3 upForwardVector = forwardFacingTargetVector * legStrength;
-			Vector3 forwardFootVector = forwardFacingTargetVector * footStrength;
-			Vector3 backVector =  -forwardFacingTargetVector * legStrength * 0.5f;
-			Vector3 backFootVector = -forwardFacingTargetVector * footStrength *0.5f;
-
 
 			Vector3 forwardRotationVector = Vector3.Cross(forwardFacingTargetVector, Vector3.up);
 
@@ -296,7 +327,7 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 	///</summary>
 	private void forwardFacingRotationalCorrectionUpdate(){
 		var hipsRotation = Quaternion.FromToRotation(hips.transform.forward, forwardFacingTargetVector);
- 		hips.AddTorque(new Vector3(hipsRotation.x, hipsRotation.y, hipsRotation.z)*forwardFacingTorque);
+ 		hips.AddTorque(new Vector3(hips.rotation.x, hipsRotation.y, hips.rotation.z)*forwardFacingTorque);
 		 
 		var spineMidRotation = Quaternion.FromToRotation(spineMid.transform.forward, forwardFacingTargetVector);
  		spineMid.AddTorque(new Vector3(spineMidRotation.x, spineMidRotation.y, spineMidRotation.z)*forwardFacingTorque);
