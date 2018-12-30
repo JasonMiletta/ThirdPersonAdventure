@@ -2703,6 +2703,7 @@ MonoBehaviour:
   uprightTorque: 500
   forwardFacingTorque: 500
   attackStrength: 500
+  jumpStrength: 2
   FrontActionTargetTransform: {fileID: 1040529406}
   RightActionTargetTransform: {fileID: 1629868522}
   LeftActionTargetTransform: {fileID: 1302830735}
@@ -2726,12 +2727,14 @@ MonoBehaviour:
   walkSpeed: 15
   runSpeed: 23
   walkingStepPace: 0.55
+  walkingLegExtensionTimingModifier: 0.7
   runningStepPace: 0.6
+  runningLegExtensionTimingModifier: 0.7
   legStrength: 10000
   footStrength: 1000
   legBackSwingModifier: 0.5
   armAnimStrength: 100
-  legExtensionTimingModifier: 0.75
+  footStepUpwardForceStrength: 1
 --- !u!114 &8364931825522164796
 MonoBehaviour:
   m_ObjectHideFlags: 0

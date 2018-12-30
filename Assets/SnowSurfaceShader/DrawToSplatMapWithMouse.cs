@@ -12,6 +12,11 @@ public class DrawToSplatMapWithMouse : MonoBehaviour
     private Material _snowMaterial, _drawMaterial;
     private RaycastHit _hit;
 
+    [Range(1,500)]
+    public float brushSize = 1;
+    [Range(0,1)]
+    public float brushStrength = 1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -29,6 +34,8 @@ public class DrawToSplatMapWithMouse : MonoBehaviour
         if(Input.GetMouseButton(0)){
             if(Physics.Raycast(_camera.ScreenPointToRay(Input.mousePosition), out _hit)){
                 _drawMaterial.SetVector("_Coordinate", new Vector4(_hit.textureCoord.x, _hit.textureCoord.y, 0, 0));
+                _drawMaterial.SetFloat("_Strength", brushStrength);
+                _drawMaterial.SetFloat("_Size", brushSize);
                 RenderTexture temp = RenderTexture.GetTemporary(_splatMap.width, _splatMap.height, 0, RenderTextureFormat.ARGBFloat);
                 Graphics.Blit(_splatMap, temp);
                 Graphics.Blit(temp, _splatMap, _drawMaterial);
