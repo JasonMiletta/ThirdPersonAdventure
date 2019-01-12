@@ -10,8 +10,9 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 	[Header("Parameters")]
 	#region Parameters
 	public float standingForce = 1.0f;
-	public float standingHeight = 1.0f;
-	public float uprightTorque = 5f;
+    public float defaultStandingHeight = 1.4f;
+    public float runningStandingHeight = 1.45f;
+    public float uprightTorque = 5f;
 	public float forwardFacingTorque = 5f;
 	public float attackStrength = 1.0f;
 	public float jumpStrength = 2.0f;
@@ -116,7 +117,7 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 			raysToDraw.Add(ray);
 			RaycastHit hit;
 
-			float standingRaycastDistance = standingHeight * 2;
+			float standingRaycastDistance = defaultStandingHeight * 2;
 			bool didHit = Physics.Raycast(ray, out hit, standingRaycastDistance, (1 << LayerMask.NameToLayer("Terrain")));
 			spheresToDraw.Add(hit.point);
 
@@ -186,6 +187,7 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 	/// PlayerAction: Fire off the necessary force to make the character jump.
 	/// </summary>
 	public void jump(){
+        //TODO: Rework this to function similar to standing update rather than wonky impulses
 		currentAnimationState = AnimationState.Jumping;
 		spineMid.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
 		hips.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
@@ -246,6 +248,7 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 		if(didHit){
 			spheresToDraw.Add(hit.point);
 
+            float standingHeight = currentAnimationState == AnimationState.Running ? runningStandingHeight : defaultStandingHeight;
             float proportionalHeight = (standingHeight - hit.distance) / standingHeight;
             Vector3 appliedStandingForce = Vector3.up * proportionalHeight * standingForce;
 
