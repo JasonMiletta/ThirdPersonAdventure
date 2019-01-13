@@ -5,5 +5,5 @@ interface IInteractable
         get;
         set;
     }
-    void Interact(Actor interactor);
+    void Interact(GameObject interactor);
 }
