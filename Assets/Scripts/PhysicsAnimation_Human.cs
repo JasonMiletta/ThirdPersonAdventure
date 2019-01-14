@@ -4,57 +4,111 @@ using UnityEngine;
 
 public class PhysicsAnimation_Human : MonoBehaviour {
 
-	public enum AnimationState {None, Standing, Walking, Running, Jumping, Falling, Sitting};
+	public enum AnimationState {None, Standing, Walking, Running, Falling, Jumping, Sitting};
 
 
-	[Header("Parameters")]
-	#region Parameters
-	public float standingForce = 1.0f;
-	public float standingHeight = 1.0f;
-	public float sittingForce = 1.0f;
-	public float sittingHeight = 1.0f;
-	public float uprightTorque = 5f;
-	public float forwardFacingTorque = 5f;
-	public float jumpStrength = 1.0f;
-	public float attackStrength = 1.0f;
+	[Header("Value Parameters")]
+	#region ValueParameters
+	[SerializeField]
+	private float walkSpeed = 1.0f;
+	[SerializeField]
+	private float runSpeed = 20.0f;
+	#endregion
+	
+	[Header("Physics Animation Forces")]
+	#region AnimationForces
+	[SerializeField]
+	private float standingForce = 1.0f;
+    [SerializeField]
+	private float defaultStandingHeight = 1.4f;
+    [SerializeField]
+	private float runningStandingHeight = 1.45f;
+    
+    [SerializeField]
+	private float uprightTorque = 5f;
+	
+    [SerializeField]
+	private float forwardFacingTorque = 5f;
+	[SerializeField]
+	private float reachForwardStrength = 5.0f;
+	
+    [SerializeField]
+	private float attackStrength = 1.0f;
+	
+    [SerializeField]
+	private float jumpStrength = 2.0f;
+	[SerializeField]
+	private float walkingStepPace;
+	[SerializeField]
+	private float walkingLegExtensionTimingModifier = 0.7f;
+	[SerializeField]
+	private float runningStepPace;
+	[SerializeField]
+	private float runningLegExtensionTimingModifier = 0.7f;
+	[SerializeField]
+	private float legStrength = 1.0f;
+	[SerializeField]
+	private float footStrength = 1.0f;
+	[SerializeField]
+	private float legBackSwingModifier = 0.5f;
+	[SerializeField]
+	private float armAnimStrength = 1.0f;
+	[SerializeField]
+	private float footStepUpwardForceStrength = 1.0f;
 	#endregion
 
 	[Header("Components")]
 	#region Components
-	public Transform FrontActionTargetTransform;
-	public Transform RightActionTargetTransform;
-	public Transform LeftActionTargetTransform;
-	public Transform LeftFootFrontTargetTransform;
-	public Transform RightFootFrontTargetTransform;
-	public Transform LeftFootBackTargetTransform;
-	public Transform RightFootBackTargetTransform;
-	public Rigidbody hips;
-	public Rigidbody spineMid;
-	public Rigidbody leftThigh;
-	public Rigidbody leftKnee;
-	public Rigidbody leftFoot;
-	public Rigidbody leftHand;
-	public Rigidbody rightThigh;
-	public Rigidbody rightKnee;
-	public Rigidbody rightFoot;
-	public Rigidbody rightHand;
+	[SerializeField]
+	private Transform FrontActionTargetTransform;
+	[SerializeField]
+	private Transform RightActionTargetTransform;
+	[Serialize Field]
+	private Transform LeftActionTargetTransform;
+	public GameObject grabbedObject;
+	#endregion
+
+	[Header("Limb RigidBody Components")]
+	#region RigidBodyComponents
+
+    [SerializeField]
+	private Rigidbody hips;
+
+    [SerializeField]
+	private Rigidbody spineMid;
+    [SerializeField]
+	private Rigidbody leftThigh;
+    [SerializeField]
+	private Rigidbody leftKnee;
+    [SerializeField]
+	private Rigidbody leftFoot;
+    [SerializeField]
+	private Rigidbody leftArm;
+    [SerializeField]
+	private Rigidbody leftForeArm;
+    [SerializeField]
+	private Rigidbody leftHand;
+    [SerializeField]
+	private Rigidbody rightThigh;
+    [SerializeField]
+	private Rigidbody rightKnee;
+    [SerializeField]
+	private Rigidbody rightFoot;
+    [SerializeField]
+	private Rigidbody rightArm;
+    [SerializeField]
+	private Rigidbody rightForeArm;
+    [SerializeField]
+	private Rigidbody rightHand;
 	#endregion
 
 	#region State
 	[Header("State")]
 	public AnimationState currentAnimationState = AnimationState.Standing;
-	public Vector3 currentFloorPosition;
-	public Vector3 forwardFacingTargetVector;
-	[SerializeField]
-	private float walkSpeed = 1.0f;
-	[SerializeField]
-	private float stepPace;
+	private Vector3 currentFloorPosition;
+	private Vector3 forwardFacingTargetVector;
 	private float currentStepTime;
 	private bool stepWithLeftLeg = false;
-	[SerializeField]
-	private float legStrength = 1.0f;
-	[SerializeField]
-	private float footStrength = 1.0f;
 	#endregion
 	
     #region GIZMOS
@@ -69,12 +123,6 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 
 		spheresToDraw.Add(getCurrentFloorPosition());
 
-		if(LeftFootFrontTargetTransform){
-			spheresToDraw.Add(LeftFootFrontTargetTransform.position);
-		}
-		if(RightFootFrontTargetTransform){
-			spheresToDraw.Add(RightFootFrontTargetTransform.position);
-		}
 		foreach(Vector3 v in spheresToDraw){
 			Gizmos.DrawWireSphere(v, 0.1f);			
 		}
@@ -82,6 +130,16 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 
 		Gizmos.DrawRay(hips.transform.position, forwardFacingTargetVector);
     }
+
+	/// <summary>
+	/// OnGUI is called for rendering and handling GUI events.
+	/// This function can be called multiple times per frame (one call per event).
+	/// </summary>
+	void OnGUI()
+	{
+		GUILayout.Label(leftFoot.velocity.ToString());
+		GUILayout.Label(rightFoot.velocity.ToString());
+	}
 
 	// Use this for initialization
 	void Start () {
@@ -95,11 +153,12 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	void FixedUpdate () {
 
 		if(currentAnimationState != AnimationState.None){
+			/* Raycast to the ground to see if we're falling or where our feet should be */
 			Ray ray = new Ray (spineMid.transform.position, Vector3.down);
 			raysToDraw.Add(ray);
 			RaycastHit hit;
 
-			float standingRaycastDistance = standingHeight * 2;
+			float standingRaycastDistance = defaultStandingHeight * 2;
 			bool didHit = Physics.Raycast(ray, out hit, standingRaycastDistance, (1 << LayerMask.NameToLayer("Terrain")));
 			spheresToDraw.Add(hit.point);
 
@@ -111,47 +170,33 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 			if(currentAnimationState == AnimationState.Standing){
 				standStraightCorrectionUpdate();
 			}
-			else if(currentAnimationState == AnimationState.Walking){
+			else if(currentAnimationState == AnimationState.Walking || currentAnimationState == AnimationState.Running){
 				walkingUpdate(didHit, hit, spineMid.transform.position);
-			} else if(currentAnimationState == AnimationState.Sitting){
-				sittingUpdate(didHit, hit, spineMid.transform.position);
 			}
 			
-			if(currentAnimationState != AnimationState.Falling && currentAnimationState != AnimationState.Sitting){
+			if(currentAnimationState != AnimationState.Falling){
 				forwardFacingRotationalCorrectionUpdate();
 				standingUpdate(didHit, hit, spineMid.transform.position);
 			}
 		}
 	}
 
-	/// <summary>
-	/// PlayerAction: Set the correct animationState. Add the necessary force to move the character based on player input. This doesn't 
-	/// provide any additional force/animation beyond pushing the hips.
-	///</summary>
-	public void moveInDirection(Vector3 movementVector){
-		if(currentAnimationState != AnimationState.Falling && currentAnimationState != AnimationState.Sitting){
-			if(movementVector == Vector3.zero){
-				currentAnimationState = AnimationState.Standing;
-			} else {
-				currentAnimationState = AnimationState.Walking;
-			}
+	#region Actions
+	
 
-			setForwardFacingTargetVector(movementVector);
-			hips.AddForce(movementVector * walkSpeed, ForceMode.Acceleration);
+	public void stand(){
+		if(currentAnimationState != AnimationState.Falling){
+			currentAnimationState = AnimationState.Falling;
+		} else {
+			currentAnimationState = AnimationState.Standing;
 		}
-	}
-
-	/// <summary>
-	///	PlayerAction: Animate the characters arms and upper body to grab an item
-	///</summary>
-	public void grabItem(Item item){
-		
 	}
 
 	/// <summary>
 	/// PlayerAction: Fire off the necessary force to make the character jump.
 	/// </summary>
 	public void jump(){
+        //TODO: Rework this to function similar to standing update rather than wonky impulses
 		currentAnimationState = AnimationState.Jumping;
 		spineMid.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
 		hips.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
@@ -173,6 +218,19 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 			currentAnimationState = AnimationState.Standing;
 		}
 	}
+
+	public void grab(){
+		//Do we want to actually grab or just float the object in front of us and pretend
+
+	}
+
+	public void reachWithHands(){
+		Vector3 forward = Transform.position.forward;
+		leftHand.addForce(forward * reachForwardStrength);
+		rightHand.AddForce(forward * reachForwardStrength);
+		//TODO: We probably want to "flag" the hands as interactable at this point to prevent false positives otherwise?
+	}
+
 	
 
 	/// <summary>
@@ -199,6 +257,32 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		StartCoroutine(smoothForceToPosition(leftHand, animationDestinationMap, attackStrength));
 		//TODO: Disable dangerous collisions with hand when done
 	}
+	#endregion
+
+	/// <summary>
+	/// PlayerAction: Set the correct animationState. Add the necessary force to move the character based on player input. This doesn't 
+	/// provide any additional force/animation beyond pushing the hips.
+	///</summary>
+	public void moveInDirection(Vector3 movementVector, bool isRunning){
+		if(currentAnimationState != AnimationState.Falling){
+			var modifiedMovementVector = movementVector;
+			if(movementVector == Vector3.zero){
+				currentAnimationState = AnimationState.Standing;
+			} else if(isRunning){
+				currentAnimationState = AnimationState.Running;
+				modifiedMovementVector = movementVector * runSpeed;	
+			} else {
+				currentAnimationState = AnimationState.Walking;
+				modifiedMovementVector = movementVector * walkSpeed;	
+			}
+
+			setForwardFacingTargetVector(modifiedMovementVector);
+			hips.AddForce(modifiedMovementVector, ForceMode.Acceleration);
+			spineMid.AddForce(modifiedMovementVector, ForceMode.Acceleration);
+		}
+	}
+
+	#region updateFunctions
 
 	public void stopAllForces(){
 		currentAnimationState = AnimationState.None;
@@ -211,6 +295,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		if(didHit){
 			spheresToDraw.Add(hit.point);
 
+            float standingHeight = currentAnimationState == AnimationState.Running ? runningStandingHeight : defaultStandingHeight;
             float proportionalHeight = (standingHeight - hit.distance) / standingHeight;
             Vector3 appliedStandingForce = Vector3.up * proportionalHeight * standingForce;
 
@@ -219,57 +304,79 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		}
 	}
 
-	/// <summary>
-	/// Handles all of the walking physic animations with the legs and hands.
-	///</summary>
-	private void sittingUpdate(bool didHit, RaycastHit hit, Vector3 sittingPosition){
-            float proportionalHeight = (sittingHeight - hit.distance) / sittingHeight;
-            Vector3 appliedSittingForce = Vector3.up * proportionalHeight * sittingForce;
-
-            spineMid.AddForce(appliedSittingForce, ForceMode.Force);
-	}
 	private void walkingUpdate(bool didHit, RaycastHit hit, Vector3 position){
 		if(didHit){
+			var legExtensionTimingModifier = walkingLegExtensionTimingModifier;
+			var stepPace = walkingStepPace;
+			if(currentAnimationState == AnimationState.Running){
+				stepPace = runningStepPace;
+				legExtensionTimingModifier = runningLegExtensionTimingModifier;
+			}
 			currentStepTime += Time.deltaTime;
+			bool extendLeg = false;
 			if(currentStepTime > stepPace){
 				currentStepTime = 0.0f;
 				stepWithLeftLeg = !stepWithLeftLeg;
+				extendLeg = false;
+			} else if(currentStepTime > stepPace * legExtensionTimingModifier){
+				extendLeg = true;
 			}
-			
-			Vector3 upForwardVector = forwardFacingTargetVector * legStrength;
-			Vector3 forwardFootVector = forwardFacingTargetVector * footStrength;
-			Vector3 backVector =  -forwardFacingTargetVector * legStrength * 0.5f;
-			Vector3 backFootVector = -forwardFacingTargetVector * footStrength *0.5f;
 
+			Vector3 forwardRotationVector = Vector3.Cross(forwardFacingTargetVector, Vector3.up);
 
 			if(stepWithLeftLeg){
-				//Step With left leg
-				leftFoot.AddForce(forwardFootVector, ForceMode.Force);
-				leftKnee.AddForce(upForwardVector + (Vector3.up * 3), ForceMode.Force);
-				leftThigh.AddForce(upForwardVector * 2.0f, ForceMode.Force);
-				leftHand.AddForce(backVector, ForceMode.Force);
-
-				rightFoot.AddForce(backFootVector, ForceMode.Force);
-				rightKnee.AddForce(backVector, ForceMode.Force);
-				rightThigh.AddForce(backVector, ForceMode.Force);
-				rightHand.AddForce(upForwardVector, ForceMode.Force);
+				//Step forward With left leg
+				leftThigh.AddRelativeTorque(Vector3.right * legStrength);
 				
-				raysToDraw.Add(new Ray(leftKnee.transform.position, upForwardVector));
-				raysToDraw.Add(new Ray(rightKnee.transform.position,backVector));
+				//If on forward up swing of leg, bend the knee, otherwise we relax it to extend the leg and finish the forward step
+				if(!extendLeg){
+					leftKnee.AddRelativeTorque(-Vector3.right * legStrength * 0.5f);
+				}
+				//Contract foot inward
+				leftFoot.AddRelativeTorque(Vector3.right * legStrength * 0.25f);
+
+
+				//extend and swing leg back
+				rightThigh.AddRelativeTorque(-Vector3.right * legStrength * legBackSwingModifier);
+				//keep knee extended out
+				rightKnee.AddRelativeTorque(Vector3.right * legStrength * legBackSwingModifier);
+				//Extend foot out
+				rightFoot.AddRelativeTorque(-Vector3.right * legStrength * legBackSwingModifier);
+
+				//Swing opposite Arm forward 
+				rightArm.AddRelativeTorque(-Vector3.forward * armAnimStrength);
+				rightForeArm.AddRelativeTorque(-Vector3.forward * armAnimStrength * 2f);
+				rightForeArm.AddForce(Vector3.up * armAnimStrength);
 			} else {
 				//Step With right leg
-				rightFoot.AddForce(forwardFootVector, ForceMode.Force);
-				rightKnee.AddForce(upForwardVector + (Vector3.up * 3), ForceMode.Force);
-				rightThigh.AddForce(upForwardVector * 2.0f, ForceMode.Force);
-				rightHand.AddForce(backVector, ForceMode.Force);
+				rightThigh.AddRelativeTorque(Vector3.right * legStrength);
+				
+				//If on forward up swing of leg, bend the knee, otherwise we relax it to extend the leg and finish the forward step
+				if(!extendLeg){
+					rightKnee.AddRelativeTorque(-Vector3.right * legStrength * 0.5f);
+				}
+				//Contract foot inward
+				rightFoot.AddRelativeTorque(Vector3.right * legStrength * 0.25f);
 
-				leftFoot.AddForce(backFootVector, ForceMode.Force);
-				leftKnee.AddForce(backVector, ForceMode.Force);
-				leftThigh.AddForce(backVector, ForceMode.Force);
-				leftHand.AddForce(upForwardVector, ForceMode.Force);
 
-				raysToDraw.Add(new Ray(rightKnee.transform.position, upForwardVector));
-				raysToDraw.Add(new Ray(leftKnee.transform.position,backVector));
+				//extend and swing leg back
+				leftThigh.AddRelativeTorque(-Vector3.right * legStrength * legBackSwingModifier);
+				//keep knee extended out
+				leftKnee.AddRelativeTorque(Vector3.right * legStrength * legBackSwingModifier);
+				//Extend foot out
+				leftFoot.AddRelativeTorque(-Vector3.right * legStrength * legBackSwingModifier);
+
+				//Swing opposite Arm forward
+				leftArm.AddRelativeTorque(-Vector3.forward * armAnimStrength);
+				leftForeArm.AddRelativeTorque(-Vector3.forward * armAnimStrength * 2f);
+				leftForeArm.AddForce(Vector3.up * armAnimStrength);
+			}
+
+			Debug.Log(leftFoot.velocity);
+			Debug.Log(rightFoot.velocity);
+			if(leftFoot.velocity == Vector3.zero || rightFoot.velocity == Vector3.zero){
+				Debug.Log("Step UP!");
+				hips.AddForce(Vector3.up * footStepUpwardForceStrength);
 			}
 		}
 	}
@@ -285,13 +392,13 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		float zOffset = getCurrentFloorPosition().z - spineMid.transform.position.z;
 		appliedStandingForce.x = xOffset * uprightTorque;
 		appliedStandingForce.z = zOffset * uprightTorque;
-		spineMid.AddForce(appliedStandingForce, ForceMode.Force);
+		spineMid.AddForce(appliedStandingForce);
 
 		xOffset = getCurrentFloorPosition().x - hips.transform.position.x;
 		zOffset = getCurrentFloorPosition().z - hips.transform.position.z;
 		appliedStandingForce.x = xOffset * uprightTorque;
 		appliedStandingForce.z = zOffset * uprightTorque;
-		hips.AddForce(appliedStandingForce, ForceMode.Force);
+		hips.AddForce(appliedStandingForce);
 	}
 
 	/// <summary>
@@ -299,12 +406,14 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	///</summary>
 	private void forwardFacingRotationalCorrectionUpdate(){
 		var hipsRotation = Quaternion.FromToRotation(hips.transform.forward, forwardFacingTargetVector);
- 		hips.AddTorque(new Vector3(hipsRotation.x, hipsRotation.y, hipsRotation.z)*forwardFacingTorque);
+ 		hips.AddTorque(new Vector3(hips.rotation.x, hipsRotation.y, hips.rotation.z)*forwardFacingTorque);
 		 
 		var spineMidRotation = Quaternion.FromToRotation(spineMid.transform.forward, forwardFacingTargetVector);
  		spineMid.AddTorque(new Vector3(spineMidRotation.x, spineMidRotation.y, spineMidRotation.z)*forwardFacingTorque);
 	}
+	#endregion
 
+	#region Utilities
 	/// <summary>
 	/// Grabs the current midpoint between the left and right foot
 	///</summary>
@@ -333,4 +442,11 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 
         yield return null;
     }
+
+	public void addRayToDraw(Vector3 start, Vector3 end){
+		Ray ray = new Ray (start, end);
+		raysToDraw.Add(ray);
+	}
+	#endregion
 }
+
