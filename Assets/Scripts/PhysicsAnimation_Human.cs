@@ -63,7 +63,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	private Transform FrontActionTargetTransform;
 	[SerializeField]
 	private Transform RightActionTargetTransform;
-	[Serialize Field]
+	[SerializeField]
 	private Transform LeftActionTargetTransform;
 	public GameObject grabbedObject;
 	#endregion
