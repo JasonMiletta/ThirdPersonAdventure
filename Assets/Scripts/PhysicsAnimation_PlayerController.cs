@@ -86,13 +86,6 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
     private void Update()
     {
         if(!isInventoryOpen){
-            if (!m_Jump)
-            {
-                m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
-                if(m_Jump){
-                    human.jump();
-                }
-            }
             
             handleDropItem();
             handleInteract();
@@ -105,7 +98,6 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
     {
         if(!isInventoryOpen){
             movement();
-            handleSit();
             handleAttackInput();
         }
     }
@@ -127,23 +119,24 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
         {
             // we use world-relative directions in the case of no main camera
             m_Move = v*Vector3.forward + h*Vector3.right;
+            m_Move = m_Move.normalized;
         }
+        bool isRunning = false;
 #if !MOBILE_INPUT
-        // walk speed multiplier
-        if (Input.GetKey(KeyCode.LeftShift)) m_Move *= 0.4f;
+        // sprint speed multiplier
+        if (Input.GetKey(KeyCode.LeftShift)) {
+            isRunning = true;
+        };
 #endif
 
+
+        if(Input.GetKey(KeyCode.Space)){
+            human.stand();
+        }
         // pass all parameters to the character control script
-        human.moveInDirection(m_Move);
+        human.moveInDirection(m_Move, isRunning);
         
         m_Jump = false;
-    }
-
-    private void handleSit(){
-        bool sitInput = CrossPlatformInputManager.GetButtonDown("Sit");
-        if(sitInput){
-            human.sit();
-        }
     }
 
     private void handleInteract(){
@@ -165,7 +158,6 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
             human.swingWithLeftHand();
         }
     }
-
     private void handleDropItem(){
         if(CrossPlatformInputManager.GetButtonDown("DropItem")){
             m_actor.dropItem();

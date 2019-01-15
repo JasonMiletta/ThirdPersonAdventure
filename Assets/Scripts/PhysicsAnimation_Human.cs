@@ -206,7 +206,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	/// </summary>
 	public void jump(){
         //TODO: Rework this to function similar to standing update rather than wonky impulses
-		currentAnimationState = AnimationState.Jumping;
+		currentAnimationState = AnimationState.Falling;
 		spineMid.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
 		hips.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
 
@@ -292,7 +292,6 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	}
 
 	#region updateFunctions
-
 	public void stopAllForces(){
 		currentAnimationState = AnimationState.None;
 	}
