@@ -8,4 +8,6 @@ interface ISwitch
     void switchOn();
 
     void switchOff();
+
+    void toggle();
 }

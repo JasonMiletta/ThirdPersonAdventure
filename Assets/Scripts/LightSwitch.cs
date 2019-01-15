@@ -21,16 +21,14 @@ public class Switch: MonoBehaviour, IInteractable, ISwitch {
     }
 
     private void OnCollisionEnter(Collision other) {
-        //TODO: Check if the other collider is from a person's hand that is reached out
-        interact(other.GameObject);
+        //Only do something if we've been hit by a character's hand
+        if(other.GameObject.getComponent<Hand>() != null){
+            interact(other.GameObject);
+        }
     }
 
     public void interact(GameObject interactor){
-        if(isOn){
-            switchOff();
-        }else {
-            switchOn();
-        }
+        toggle();
     }
 
     public void switchOn(){
@@ -39,6 +37,14 @@ public class Switch: MonoBehaviour, IInteractable, ISwitch {
 
     public void switchOff(){
         turnLightOff();
+    }
+
+    public void toggle(){
+        if(isOn){
+            switchOn();
+        } else {
+            switchOff();
+        }
     }
 
     public void turnLightOn(){
