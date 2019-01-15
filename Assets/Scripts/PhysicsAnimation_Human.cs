@@ -13,6 +13,8 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	private float walkSpeed = 1.0f;
 	[SerializeField]
 	private float runSpeed = 20.0f;
+	[SerializeField]
+	private float lookFocusRange = 2.5f;
 	#endregion
 	
 	[Header("Physics Animation Forces")]
@@ -29,6 +31,8 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	
     [SerializeField]
 	private float forwardFacingTorque = 5f;
+	[SerializeField]
+	private float lookTorqueInfluence = 1f;
 	[SerializeField]
 	private float reachForwardStrength = 5.0f;
 	
@@ -70,6 +74,8 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 
 	[Header("Limb RigidBody Components")]
 	#region RigidBodyComponents
+	[SerializeField]
+	private RigidBody head;
 
     [SerializeField]
 	private Rigidbody hips;
@@ -177,7 +183,10 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 			if(currentAnimationState != AnimationState.Falling){
 				forwardFacingRotationalCorrectionUpdate();
 				standingUpdate(didHit, hit, spineMid.transform.position);
+				GameObject objectToFocus = determineObjectToFocus();
+				rotateHeadToFocusedObject(objectToFocus);
 			}
+
 		}
 	}
 
@@ -410,6 +419,24 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		 
 		var spineMidRotation = Quaternion.FromToRotation(spineMid.transform.forward, forwardFacingTargetVector);
  		spineMid.AddTorque(new Vector3(spineMidRotation.x, spineMidRotation.y, spineMidRotation.z)*forwardFacingTorque);
+	}
+
+	private GameObject determineObjectToFocus(){
+		//TODO: We'll want to have a priority heirarchy, including any nearby switches, grabbable objects, doors, breakable actors, or actors
+		// get a normal for the surface that is being touched to move along it
+            RaycastHit hitInfo;
+			//TODO: Raycast in an area around us for any objects that we want to focus on. Find the closest one and return that object.
+            Physics.SphereCast(transform.position, lookFocusRange, Vector3.up, out hitInfo,
+                               1f, Physics.AllLayers);
+
+		return null;
+	}
+
+	private void rotateHeadToFocusedObject(GameObject focusedObject){
+		if(focusedObject != null){
+			var headRotation = Quaternion.FromToRotation(head.transform.forward, focusedObject.transform.position);
+			head.AddTorque(new Vector3(headRotation.x, headRotation.y, head.rotation.y) * lookTorqueInfluence);
+		}
 	}
 	#endregion
 
