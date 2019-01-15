@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Switch: MonoBehaviour, IInteractable, ISwitchable {
+public class InteractableSwitch: MonoBehaviour, IInteractable, ISwitchable {
 
     #region Parameters
     public Bool isOn {
