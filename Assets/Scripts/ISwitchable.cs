@@ -1,4 +1,4 @@
-interface ISwitch
+interface ISwitchable
 {
     // Property signatures:
     bool isOn{

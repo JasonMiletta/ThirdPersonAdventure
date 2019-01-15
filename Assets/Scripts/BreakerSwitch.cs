@@ -8,8 +8,8 @@ public class BreakerSwitch: MonoBehaviour{
     public Bool isEnabled {
         get; set;
     }
-    public ISwitch ParentSwitch;
-    public List<ISwitch> switchList;
+    public ISwitchable ParentSwitch;
+    public List<ISwitchable> switchList;
     #endregion
     private void Start() {
         isEnabled = true;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Switch: MonoBehaviour, IInteractable, ISwitch {
+public class Switch: MonoBehaviour, IInteractable, ISwitchable {
 
     #region Parameters
     public Bool isOn {
@@ -11,11 +11,7 @@ public class Switch: MonoBehaviour, IInteractable, ISwitch {
     #endregion
 
     #region Components
-    public GameObject Light;
-    [SerializeField]
-    private Material lightOnMaterial;
-    [SerializeField]
-    private Material lightOffMaterial;
+    public ISwitchable parentSwitchable;
     #endregion
     private void Start() {
     }
@@ -32,28 +28,14 @@ public class Switch: MonoBehaviour, IInteractable, ISwitch {
     }
 
     public void switchOn(){
-        turnLightOn();
+        parentSwitchable.switchOn();
     }
 
     public void switchOff(){
-        turnLightOff();
+        parentSwitchable.switchOff();
     }
 
     public void toggle(){
-        if(isOn){
-            switchOn();
-        } else {
-            switchOff();
-        }
-    }
-
-    public void turnLightOn(){
-        //TODO: Set emissive material property for gameobject
-        isOn = true;
-    }
-
-    public void turnLightOff(){
-        //TODO: revert emissive material property for gameObject
-        isOn = false;
+        parentSwitchable.toggle();
     }
 }
