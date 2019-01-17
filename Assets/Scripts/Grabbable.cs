@@ -5,7 +5,7 @@ using UnityEngine;
 public class Grabbable: MonoBehaviour {
 
     #region Parameters
-    public Bool isGrabbable;
+    public bool isGrabbable;
     #endregion
 
     #region Components

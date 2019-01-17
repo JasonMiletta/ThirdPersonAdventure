@@ -5,26 +5,27 @@ using UnityEngine;
 public class PressureSwitch: MonoBehaviour, ISwitchable {
 
     #region Parameters
-    public Bool isOn {
+    public bool isOn {
         get; set;
     }
     #endregion
 
     #region Components
     public GameObject specificObject;
-    public ISwitchable parentSwitchable;
+    [SerializeField]
+    private ISwitchable parentSwitchable;
     #endregion
     private void Start() {
     }
 
     private void OnCollisionEnter(Collision other) {
-        if(other.GameObject == specificObject){
+        if(other.gameObject == specificObject){
             switchOn();
         }
     }
 
     private void OnCollisionExit(Collision other) {
-        if(other.GameObject == specificObject){
+        if(other.gameObject == specificObject){
             switchOff();
         }
     }

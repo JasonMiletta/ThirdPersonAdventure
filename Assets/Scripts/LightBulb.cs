@@ -2,16 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Light: MonoBehaviour, ISwitchable {
+public class LightBulb: MonoBehaviour, ISwitchable {
 
     #region Parameters
-    public Bool isOn {
+    public bool isOn {
         get; set;
     }
     #endregion
 
     #region Components
-    public GameObject Light;
+    public GameObject light;
     [SerializeField]
     private Material lightOnMaterial;
     [SerializeField]

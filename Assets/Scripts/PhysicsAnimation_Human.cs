@@ -75,11 +75,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	[Header("Limb RigidBody Components")]
 	#region RigidBodyComponents
 	[SerializeField]
-	private RigidBody head;
-
+	private Rigidbody head;
     [SerializeField]
 	private Rigidbody hips;
-
     [SerializeField]
 	private Rigidbody spineMid;
     [SerializeField]
@@ -234,9 +232,8 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	}
 
 	public void reachWithHands(){
-		Vector3 forward = Transform.position.forward;
-		leftHand.addForce(forward * reachForwardStrength);
-		rightHand.AddForce(forward * reachForwardStrength);
+		leftHand.AddForce(forwardFacingTargetVector * reachForwardStrength);
+		rightHand.AddForce(forwardFacingTargetVector * reachForwardStrength);
 		//TODO: We probably want to "flag" the hands as interactable at this point to prevent false positives otherwise?
 	}
 

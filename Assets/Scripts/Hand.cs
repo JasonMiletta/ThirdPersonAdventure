@@ -18,7 +18,7 @@ public class Hand : MonoBehaviour {
 
     private void OnCollisionEnter(Collision other) {
         if(grabbing == true && grabbedObject == null){
-            grabObject(other.GameObject);
+            grabObject(other.gameObject);
         }
     }
 	
@@ -29,14 +29,19 @@ public class Hand : MonoBehaviour {
 	}
 
     void grabObject(GameObject objectToGrab){
-        if(objectToGrab.GetComponent<Grabbable>()?.isGrabbable){
-            objectToGrab.parent = this.transform;
+        Grabbable grabbableComponent = objectToGrab.GetComponent<Grabbable>();
+        if (grabbableComponent != null)
+        {
+            if (grabbableComponent.isGrabbable)
+            {
+                objectToGrab.transform.parent = this.transform;
+            }
         }
     }
 
     void dropObject(){
         if(grabbedObject != null){
-            grabbedObject.parent = null;
+            grabbedObject.transform.parent = null;
             grabbedObject = null;
         }
     }

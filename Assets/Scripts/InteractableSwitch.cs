@@ -5,25 +5,30 @@ using UnityEngine;
 public class InteractableSwitch: MonoBehaviour, IInteractable, ISwitchable {
 
     #region Parameters
-    public Bool isOn {
+    public bool isOn {
         get; set;
+    }
+    public bool isInteractable
+    {
+        get;set;
     }
     #endregion
 
     #region Components
-    public ISwitchable parentSwitchable;
+    [SerializeField]
+    private ISwitchable parentSwitchable;
     #endregion
     private void Start() {
     }
 
     private void OnCollisionEnter(Collision other) {
         //Only do something if we've been hit by a character's hand
-        if(other.GameObject.getComponent<Hand>() != null){
-            interact(other.GameObject);
+        if(other.gameObject.GetComponent<Hand>() != null){
+            Interact(other.gameObject);
         }
     }
 
-    public void interact(GameObject interactor){
+    public void Interact(GameObject interactor){
         toggle();
     }
 

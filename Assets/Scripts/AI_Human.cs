@@ -35,10 +35,10 @@ public class AI_Human : MonoBehaviour {
 			if(distanceToActor > minFollowDistance && distanceToActor <= maxFollowDistance){
 				Vector3 directionToActor = ActorToFollow.transform.position - transform.position;
 				
-				human.moveInDirection(directionToActor.normalized);
+				human.moveInDirection(directionToActor.normalized, false);
 				return;
 			}
 		}
-		human.moveInDirection(Vector3.zero);
+		human.moveInDirection(Vector3.zero, false);
 	}
 }

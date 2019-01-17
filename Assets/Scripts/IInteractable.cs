@@ -1,3 +1,4 @@
+using UnityEngine;
 interface IInteractable
 {
     // Property signatures:

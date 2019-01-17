@@ -5,13 +5,13 @@ using UnityEngine;
 public class Door: MonoBehaviour, ISwitchable {
 
     #region Parameters
-    public Bool isOn {
+    public bool isOn {
         get; set;
     }
     #endregion
 
     #region Components
-    public GameObject Door;
+    public GameObject door;
     #endregion
     private void Start() {
     }

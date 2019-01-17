@@ -5,11 +5,15 @@ using UnityEngine;
 public class BreakerSwitch: MonoBehaviour{
 
     #region Parameters
-    public Bool isEnabled {
+    public bool isEnabled {
         get; set;
     }
-    public ISwitchable ParentSwitch;
-    public List<ISwitchable> switchList;
+    #endregion
+    #region Components
+    [SerializeField]
+    private ISwitchable ParentSwitch;
+    [SerializeField]
+    private List<ISwitchable> switchList;
     #endregion
     private void Start() {
         isEnabled = true;
@@ -18,9 +22,9 @@ public class BreakerSwitch: MonoBehaviour{
     private void Update(){
         if(isEnabled){
             bool allOn = true;
-            for(var i = 0; i < switchList.Length || allOn == false; ++i){
+            for(var i = 0; i < switchList.Count || allOn == false; ++i){
                 if(switchList[i].isOn == false){
-    `               allOn = false;
+                    allOn = false;
                 }
             }
             if(allOn){

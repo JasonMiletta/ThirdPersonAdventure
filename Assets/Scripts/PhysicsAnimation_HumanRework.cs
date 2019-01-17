@@ -175,45 +175,6 @@ public class PhysicsAnimation_HumanRework : MonoBehaviour {
 	/// PlayerAction: Fire off the necessary force to make the character jump.
 	/// </summary>
 	public void jump(){
-		currentAnimationState = AnimationState.Jumping;
-		spineMid.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
-		hips.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
-
-		if(stepWithLeftLeg){
-			rightKnee.AddForce(forwardFacingTargetVector * jumpStrength, ForceMode.Impulse);
-		} else {
-			leftKnee.AddForce(forwardFacingTargetVector * jumpStrength, ForceMode.Impulse);
-		}
-	}
-
-	/// <summary>
-	/// PlayerAction: update currentAnimationState to sitting. Forces to simulate sitting handled by sittingUpdate
-	/// </summary>
-	public void sit(){
-		if(currentAnimationState == AnimationState.Standing){
-			currentAnimationState = AnimationState.Sitting;
-		} else if(currentAnimationState == AnimationState.Sitting){
-			currentAnimationState = AnimationState.Standing;
-		}
-	}
-	
-
-	/// <summary>
-	/// PlayerAction send series of force inputs to swing right hand
-	/// </summary>
-	public void swingWithRightHand(){
-		//TODO Enable dangerous collisions with right hand and start swinging
-		Dictionary<Vector3, float> animationDestinationMap = new Dictionary<Vector3, float>();
-		animationDestinationMap.Add(RightActionTargetTransform.position, 0.1f);
-		animationDestinationMap.Add(FrontActionTargetTransform.position, 0.25f);
-		StartCoroutine(smoothForceToPosition(rightHand, animationDestinationMap, attackStrength));
-		//TODO: Disable dangerous collisions with right hand when done
-	}
-
-	/// <summary>
-	/// PlayerAction: Fire off the necessary force to make the character jump.
-	/// </summary>
-	public void jump(){
         //TODO: Rework this to function similar to standing update rather than wonky impulses
 		currentAnimationState = AnimationState.Jumping;
 		spineMid.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
