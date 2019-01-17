@@ -10,9 +10,9 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	[Header("Value Parameters")]
 	#region ValueParameters
 	[SerializeField]
-	private float walkSpeed = 1.0f;
+	private float walkSpeed = 10.0f;
 	[SerializeField]
-	private float runSpeed = 20.0f;
+	private float runSpeed = 15.0f;
 	[SerializeField]
 	private float lookFocusRange = 2.5f;
 	#endregion
@@ -20,17 +20,17 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	[Header("Physics Animation Forces")]
 	#region AnimationForces
 	[SerializeField]
-	private float standingForce = 1.0f;
+	private float standingForce = 10000.0f;
     [SerializeField]
 	private float defaultStandingHeight = 1.4f;
     [SerializeField]
 	private float runningStandingHeight = 1.45f;
     
     [SerializeField]
-	private float uprightTorque = 5f;
+	private float uprightTorque = 500f;
 	
     [SerializeField]
-	private float forwardFacingTorque = 5f;
+	private float forwardFacingTorque = 500f;
 	[SerializeField]
 	private float lookTorqueInfluence = 1f;
 	[SerializeField]
@@ -42,21 +42,21 @@ public class PhysicsAnimation_Human : MonoBehaviour {
     [SerializeField]
 	private float jumpStrength = 2.0f;
 	[SerializeField]
-	private float walkingStepPace;
+	private float walkingStepPace = 0.55f;
 	[SerializeField]
 	private float walkingLegExtensionTimingModifier = 0.7f;
 	[SerializeField]
-	private float runningStepPace;
+	private float runningStepPace = 0.6f;
 	[SerializeField]
 	private float runningLegExtensionTimingModifier = 0.7f;
 	[SerializeField]
-	private float legStrength = 1.0f;
+	private float legStrength = 10000.0f;
 	[SerializeField]
-	private float footStrength = 1.0f;
+	private float footStrength = 1000.0f;
 	[SerializeField]
 	private float legBackSwingModifier = 0.5f;
 	[SerializeField]
-	private float armAnimStrength = 1.0f;
+	private float armAnimStrength = 100.0f;
 	[SerializeField]
 	private float footStepUpwardForceStrength = 1.0f;
 	#endregion
@@ -110,7 +110,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	[Header("State")]
 	public AnimationState currentAnimationState = AnimationState.Standing;
 	private Vector3 currentFloorPosition;
-	private Vector3 forwardFacingTargetVector;
+	public Vector3 forwardFacingTargetVector;
 	private float currentStepTime;
 	private bool stepWithLeftLeg = false;
 	#endregion
@@ -125,14 +125,20 @@ public class PhysicsAnimation_Human : MonoBehaviour {
         }
 		raysToDraw = new List<Ray>();
 
-		spheresToDraw.Add(getCurrentFloorPosition());
+        Vector3 floorPosition = getCurrentFloorPosition();
+        if (floorPosition != null)
+        {
+            spheresToDraw.Add(floorPosition);
+        }
 
 		foreach(Vector3 v in spheresToDraw){
 			Gizmos.DrawWireSphere(v, 0.1f);			
 		}
 		spheresToDraw = new List<Vector3>();
-
-		Gizmos.DrawRay(hips.transform.position, forwardFacingTargetVector);
+        if (hips != null)
+        {
+            Gizmos.DrawRay(hips.transform.position, forwardFacingTargetVector);
+        }
     }
 
 	/// <summary>
@@ -441,7 +447,10 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	/// Grabs the current midpoint between the left and right foot
 	///</summary>
 	private Vector3 getCurrentFloorPosition(){
-		currentFloorPosition = (leftFoot.transform.position + rightFoot.transform.position) / 2;
+        currentFloorPosition = Vector3.zero;
+        if (leftFoot != null && rightFoot != null) {
+            currentFloorPosition = (leftFoot.transform.position + rightFoot.transform.position) / 2;
+        }
 		return currentFloorPosition;
 	}
 
