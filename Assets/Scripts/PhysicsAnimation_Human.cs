@@ -232,16 +232,34 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 		}
 	}
 
-	public void grab(){
-		//Do we want to actually grab or just float the object in front of us and pretend
+    public void beginGrabbing()
+    {
+        leftHand?.GetComponent<Hand>()?.beginGrabbing();
+        rightHand?.GetComponent<Hand>()?.beginGrabbing();
+    }
 
-	}
+    public void stopGrabbing()
+    {
+        leftHand?.GetComponent<Hand>()?.stopGrabbing();
+        rightHand?.GetComponent<Hand>()?.stopGrabbing();
+    }
 
-	public void reachWithHands(){
-		leftHand.AddForce(forwardFacingTargetVector * reachForwardStrength);
-		rightHand.AddForce(forwardFacingTargetVector * reachForwardStrength);
-		//TODO: We probably want to "flag" the hands as interactable at this point to prevent false positives otherwise?
-	}
+	public void reachWithLeftHand(Vector3 reachTargetVector){
+        reachTargetVector = reachTargetVector * .75f;
+        var armsRotation = Quaternion.FromToRotation(leftArm.transform.forward, reachTargetVector);
+
+        leftArm.AddRelativeTorque(-Vector3.forward * reachForwardStrength,ForceMode.Force);
+        leftHand.AddForce(reachTargetVector * reachForwardStrength);
+    }
+
+    public void reachWithRightHand(Vector3 reachTargetVector)
+    {
+        reachTargetVector = reachTargetVector * .75f;
+        var armsRotation = Quaternion.FromToRotation(rightArm.transform.forward, reachTargetVector);
+
+        rightArm.AddRelativeTorque(-Vector3.forward * reachForwardStrength,ForceMode.Force);
+        rightHand.AddForce(reachTargetVector * reachForwardStrength);
+    }
 
 	
 
@@ -310,7 +328,8 @@ public class PhysicsAnimation_Human : MonoBehaviour {
             float proportionalHeight = (standingHeight - hit.distance) / standingHeight;
             Vector3 appliedStandingForce = Vector3.up * proportionalHeight * standingForce;
 
-            spineMid.AddForce(appliedStandingForce, ForceMode.Force);
+            spineMid.AddForce(appliedStandingForce * .5f, ForceMode.Force);
+            head.AddForce(appliedStandingForce * .5f, ForceMode.Force);
             raysToDraw.Add(new Ray(standingPosition, appliedStandingForce));
 		}
 	}

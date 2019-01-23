@@ -12,6 +12,7 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
     private Actor m_actor;                  // Reference to the actor of the human we're controlling (This should be were all the state of the human go)
     private Transform m_Cam;                  // A reference to the main camera in the scenes transform
     private Vector3 m_CamForward;             // The current forward direction of the camera
+    private Vector3 m_CamAimVector;
     private Vector3 m_Move;
     private bool m_Jump;                      // the world-relative desired move direction, calculated from the camForward and user input.
     #endregion
@@ -20,7 +21,19 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
     [Header("State attributes")]
 	List<Item> itemsInRange = new List<Item>();
     private bool isInventoryOpen = false;
-	#endregion
+    #endregion
+
+    #region GIZMOS
+    List<Ray> raysToDraw = new List<Ray>();
+    #endregion
+    void OnDrawGizmos()
+    {
+        foreach (Ray r in raysToDraw)
+        {
+            Gizmos.DrawRay(r);
+        }
+        raysToDraw = new List<Ray>();
+    }
 
     /// <summary>
     /// This function is called when the object becomes enabled and active.
@@ -39,6 +52,8 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
         UI_InventoryController.OnInventoryOpened -= handleInventoryOpened;
         UI_InventoryController.OnInventoryClosed -= handleInventoryClosed;
     }
+
+
 
 	/// <summary>
 	/// OnTriggerEnter is called when the Collider other enters the trigger.
@@ -89,6 +104,7 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
             
             handleDropItem();
             handleInteract();
+            handleGrabInput();
         }
     }
 
@@ -98,7 +114,8 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
     {
         if(!isInventoryOpen){
             movement();
-            handleAttackInput();
+            //handleAttackInput();
+            handleReachInput();
         }
     }
 
@@ -150,6 +167,17 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
         }
     }
 
+    private void handleGrabInput()
+    {
+        if (CrossPlatformInputManager.GetButtonDown("Grab"))
+        {
+            human.beginGrabbing();
+        } else if (CrossPlatformInputManager.GetButtonUp("Grab"))
+        {
+            human.stopGrabbing();
+        }
+    }
+
     private void handleAttackInput(){
         if(CrossPlatformInputManager.GetButtonDown("Fire")){
             human.swingWithRightHand();
@@ -158,6 +186,19 @@ public class PhysicsAnimation_PlayerController : MonoBehaviour {
             human.swingWithLeftHand();
         }
     }
+
+    private void handleReachInput()
+    {
+        if (CrossPlatformInputManager.GetButton("Fire"))
+        {
+            human.reachWithLeftHand(m_Cam.forward);
+        }
+        if (CrossPlatformInputManager.GetButton("Fire2"))
+        {
+            human.reachWithRightHand(m_Cam.forward);
+        }
+    }
+
     private void handleDropItem(){
         if(CrossPlatformInputManager.GetButtonDown("DropItem")){
             m_actor.dropItem();

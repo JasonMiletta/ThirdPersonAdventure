@@ -25,8 +25,27 @@ public class Hand : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//TODO: If grab key is pressed, set grabbing = true;
-        grabbing = false;
+        //grabbing = false;
 	}
+
+    public void beginGrabbing()
+    {
+        if (!grabbing)
+        {
+            GetComponent<Renderer>().material.color = Color.green;
+            grabbing = true;
+        }
+    }
+
+    public void stopGrabbing()
+    {
+        if (grabbing)
+        {
+            GetComponent<Renderer>().material.color = Color.white;
+            dropObject();
+        }
+        grabbing = false;
+    }
 
     void grabObject(GameObject objectToGrab){
         Grabbable grabbableComponent = objectToGrab.GetComponent<Grabbable>();
@@ -35,6 +54,8 @@ public class Hand : MonoBehaviour {
             if (grabbableComponent.isGrabbable)
             {
                 objectToGrab.transform.parent = this.transform;
+                objectToGrab.GetComponent<Rigidbody>().isKinematic = true;
+                grabbedObject = objectToGrab;
             }
         }
     }
@@ -42,6 +63,7 @@ public class Hand : MonoBehaviour {
     void dropObject(){
         if(grabbedObject != null){
             grabbedObject.transform.parent = null;
+            grabbedObject.GetComponent<Rigidbody>().isKinematic = false;
             grabbedObject = null;
         }
     }
