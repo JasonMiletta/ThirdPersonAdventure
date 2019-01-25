@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5915803735237934964}
   - component: {fileID: 5915803735237934967}
   - component: {fileID: 5915803735237934966}
-  - component: {fileID: 5915803735237934970}
+  - component: {fileID: 8752773740777024890}
   m_Layer: 10
   m_Name: SnowPlane
   m_TagString: Untagged
@@ -93,7 +93,7 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &5915803735237934970
+--- !u!114 &8752773740777024890
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -102,8 +102,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 5915803735237934961}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1dd205209ca6a254491799a419eae2c9, type: 3}
+  m_Script: {fileID: 11500000, guid: a81bc036673722d44bb36454c342bd12, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   drawShader: {fileID: 4800000, guid: fb579551f76534d47a5746e3fe0a9e4b, type: 3}
-  tracksHeightDistance: 1
+  tracksHeightDistance: 0.18
