@@ -35,10 +35,12 @@ public class LightBulb: MonoBehaviour, ISwitchable {
     }
 
     public void toggle(){
-        if(isOn){
-            switchOn();
-        } else {
+        if(isOn)
+        {
             switchOff();
+        } else
+        {
+            switchOn();
         }
     }
 

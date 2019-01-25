@@ -5,9 +5,11 @@ using UnityEngine;
 public class InteractableSwitch: MonoBehaviour, IInteractable, ISwitchable {
 
     #region Parameters
+    [SerializeField]
     public bool isOn {
         get; set;
     }
+    [SerializeField]
     public bool isInteractable
     {
         get;set;
@@ -35,10 +37,13 @@ public class InteractableSwitch: MonoBehaviour, IInteractable, ISwitchable {
     }
 
     public void switchOn(){
+        Debug.Log("Switch On!", this);
         switchableInterface.switchOn();
     }
 
-    public void switchOff(){
+    public void switchOff()
+    {
+        Debug.Log("Switch On!", this);
         switchableInterface.switchOff();
     }
 

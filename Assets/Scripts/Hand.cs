@@ -10,10 +10,11 @@ public class Hand : MonoBehaviour {
 
     #region Components
     public GameObject grabbedObject;
+    private FixedJoint joint;
     #endregion
 
 	// Use this for initialization
-	void Start () { 
+	void Start () {
 	}
 
     private void OnCollisionEnter(Collision other) {
@@ -49,12 +50,14 @@ public class Hand : MonoBehaviour {
 
     void grabObject(GameObject objectToGrab){
         Grabbable grabbableComponent = objectToGrab.GetComponent<Grabbable>();
-        if (grabbableComponent != null)
+        Rigidbody grabbableRigidBody = objectToGrab.GetComponent<Rigidbody>();
+        if (grabbableComponent != null && grabbableRigidBody != null)
         {
             if (grabbableComponent.isGrabbable)
             {
-                objectToGrab.transform.parent = this.transform;
-                objectToGrab.GetComponent<Rigidbody>().isKinematic = true;
+                createFixedJoint(grabbableRigidBody);
+                //objectToGrab.transform.parent = this.transform;
+                //objectToGrab.GetComponent<Rigidbody>().isKinematic = true;
                 grabbedObject = objectToGrab;
             }
         }
@@ -62,10 +65,21 @@ public class Hand : MonoBehaviour {
 
     void dropObject(){
         if(grabbedObject != null){
-            grabbedObject.transform.parent = null;
-            grabbedObject.GetComponent<Rigidbody>().isKinematic = false;
+            destroyFixedJoint();
+            //grabbedObject.transform.parent = null;
+            //grabbedObject.GetComponent<Rigidbody>().isKinematic = false;
             grabbedObject = null;
         }
     }
 
+    private void createFixedJoint(Rigidbody rigidBody)
+    {
+        joint = gameObject.AddComponent(typeof(FixedJoint)) as FixedJoint;
+        joint.connectedBody = rigidBody;
+    }
+
+    private void destroyFixedJoint()
+    {
+        Destroy(joint);
+    }
 }

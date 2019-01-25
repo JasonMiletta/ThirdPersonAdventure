@@ -147,8 +147,8 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 	/// </summary>
 	void OnGUI()
 	{
-		GUILayout.Label(leftFoot.velocity.ToString());
-		GUILayout.Label(rightFoot.velocity.ToString());
+		//GUILayout.Label(leftFoot.velocity.ToString());
+		//GUILayout.Label(rightFoot.velocity.ToString());
 	}
 
 	// Use this for initialization
@@ -246,7 +246,8 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 
 	public void reachWithLeftHand(Vector3 reachTargetVector){
         reachTargetVector = reachTargetVector * .75f;
-        var armsRotation = Quaternion.FromToRotation(leftArm.transform.forward, reachTargetVector);
+        reachTargetVector = Quaternion.Euler(45, 0, 0) * reachTargetVector;
+        //var armsRotation = Quaternion.FromToRotation(leftArm.transform.forward, reachTargetVector);
 
         leftArm.AddRelativeTorque(-Vector3.forward * reachForwardStrength,ForceMode.Force);
         leftHand.AddForce(reachTargetVector * reachForwardStrength);
@@ -255,7 +256,8 @@ public class PhysicsAnimation_Human : MonoBehaviour {
     public void reachWithRightHand(Vector3 reachTargetVector)
     {
         reachTargetVector = reachTargetVector * .75f;
-        var armsRotation = Quaternion.FromToRotation(rightArm.transform.forward, reachTargetVector);
+        reachTargetVector = Quaternion.Euler(45, 0, 0) * reachTargetVector;
+        //var armsRotation = Quaternion.FromToRotation(rightArm.transform.forward, reachTargetVector);
 
         rightArm.AddRelativeTorque(-Vector3.forward * reachForwardStrength,ForceMode.Force);
         rightHand.AddForce(reachTargetVector * reachForwardStrength);
@@ -401,9 +403,7 @@ public class PhysicsAnimation_Human : MonoBehaviour {
 				leftForeArm.AddRelativeTorque(-Vector3.forward * armAnimStrength * 2f);
 				leftForeArm.AddForce(Vector3.up * armAnimStrength);
 			}
-
-			Debug.Log(leftFoot.velocity);
-			Debug.Log(rightFoot.velocity);
+            
 			if(leftFoot.velocity == Vector3.zero || rightFoot.velocity == Vector3.zero){
 				Debug.Log("Step UP!");
 				hips.AddForce(Vector3.up * footStepUpwardForceStrength);
