@@ -16,9 +16,11 @@ public class InteractableSwitch: MonoBehaviour, IInteractable, ISwitchable {
 
     #region Components
     [SerializeField]
-    private ISwitchable parentSwitchable;
+    private Component parentSwitchable;
+    private ISwitchable switchableInterface;
     #endregion
     private void Start() {
+        switchableInterface = parentSwitchable.GetComponent<ISwitchable>();
     }
 
     private void OnCollisionEnter(Collision other) {
@@ -33,14 +35,14 @@ public class InteractableSwitch: MonoBehaviour, IInteractable, ISwitchable {
     }
 
     public void switchOn(){
-        parentSwitchable.switchOn();
+        switchableInterface.switchOn();
     }
 
     public void switchOff(){
-        parentSwitchable.switchOff();
+        switchableInterface.switchOff();
     }
 
     public void toggle(){
-        parentSwitchable.toggle();
+        switchableInterface.toggle();
     }
 }
