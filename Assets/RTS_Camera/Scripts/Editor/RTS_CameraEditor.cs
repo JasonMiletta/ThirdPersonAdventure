@@ -109,6 +109,8 @@ namespace RTS_Cam
             {
                 camera.mouseRotationKey = (KeyCode)EditorGUILayout.EnumPopup("Mouse rotation key: ", camera.mouseRotationKey);
                 camera.mouseRotationSpeed = EditorGUILayout.FloatField("Mouse rotation speed: ", camera.mouseRotationSpeed);
+                camera.reverseVerticalMouseRotation = EditorGUILayout.Toggle("Reverse vertical mouse rotation: ", camera.reverseVerticalMouseRotation);
+                camera.reverseHorizontalMouseRotation = EditorGUILayout.Toggle("Reverse horizontal mouse rotation: ", camera.reverseHorizontalMouseRotation);
             }
         }
 

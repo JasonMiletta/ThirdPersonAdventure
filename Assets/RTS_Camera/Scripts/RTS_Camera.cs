@@ -91,6 +91,7 @@ namespace RTS_Cam
         public string verticalAxis = "Vertical";
 
         public bool usePanning = true;
+        public bool reversePanning = false;
         public KeyCode panningKey = KeyCode.Mouse2;
 
         public bool useKeyboardZooming = true;
@@ -105,6 +106,8 @@ namespace RTS_Cam
         public KeyCode rotateLeftKey = KeyCode.Z;
 
         public bool useMouseRotation = true;
+        public bool reverseVerticalMouseRotation = false;
+        public bool reverseHorizontalMouseRotation = false;
         public KeyCode mouseRotationKey = KeyCode.Mouse1;
 
         private Vector2 KeyboardInput
@@ -279,11 +282,17 @@ namespace RTS_Cam
         /// </summary>
         private void Rotation()
         {
-            if(useKeyboardRotation)
+            if(useKeyboardRotation){
                 transform.Rotate(Vector3.up, RotationDirection * Time.deltaTime * rotationSped, Space.World);
+            }
 
-            if (useMouseRotation && Input.GetKey(mouseRotationKey))
-                m_Transform.Rotate(Vector3.up, -MouseAxis.x * Time.deltaTime * mouseRotationSpeed, Space.World);
+            if (useMouseRotation && Input.GetKey(mouseRotationKey)){
+                var modifiedMouseAxisX = reverseHorizontalMouseRotation ? -MouseAxis.x : MouseAxis.x;
+                var modifiedMouseAxisY = reverseVerticalMouseRotation ? -MouseAxis.y : MouseAxis.y;
+
+                m_Transform.Rotate(Vector3.up, modifiedMouseAxisX * Time.deltaTime * mouseRotationSpeed, Space.World);
+                m_Transform.Rotate(m_Transform.right, modifiedMouseAxisY * Time.deltaTime * mouseRotationSpeed, Space.World);
+            }
         }
 
         /// <summary>
