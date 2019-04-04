@@ -79,11 +79,6 @@ namespace RTS_Cam
                 camera.limitX = EditorGUILayout.FloatField("Limit X: ", camera.limitX);
                 camera.limitY = EditorGUILayout.FloatField("Limit Y: ", camera.limitY);
             }
-
-            GUILayout.Label("Follow target", EditorStyles.boldLabel);
-            camera.targetFollow = EditorGUILayout.ObjectField("Target to follow: ", camera.targetFollow, typeof(Transform)) as Transform;
-            camera.targetOffset = EditorGUILayout.Vector3Field("Target offset: ", camera.targetOffset);
-            camera.followingSpeed = EditorGUILayout.FloatField("Following speed: ", camera.followingSpeed);
         }
 
         private void RotationTab()
