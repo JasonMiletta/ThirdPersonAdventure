@@ -273,7 +273,6 @@ GameObject:
   - component: {fileID: 174737919}
   - component: {fileID: 174737918}
   - component: {fileID: 174737917}
-  - component: {fileID: 174737913}
   - component: {fileID: 174737914}
   - component: {fileID: 174737926}
   m_Layer: 9
@@ -551,24 +550,6 @@ MonoBehaviour:
   m_RightArmTransform: {fileID: 2033633794}
   m_RightHandTransform: {fileID: 11577220}
   m_LegsTransform: {fileID: 174737911}
---- !u!114 &174737913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 174737910}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46d65c36c50ed134aae7aa522e635c3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  foot:
-  - {fileID: 1565391001}
-  - {fileID: 1961907711}
-  tracksHeightDistance: 0.18
-  brushSize: 1.2
-  brushStrength: 0.75
 --- !u!114 &174737914
 MonoBehaviour:
   m_ObjectHideFlags: 0
