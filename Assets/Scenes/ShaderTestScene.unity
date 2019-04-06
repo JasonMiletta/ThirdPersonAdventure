@@ -98,7 +98,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
   m_LightingDataAsset: {fileID: 112000000, guid: 6ffc33724797e144fa5326aa14059227,
     type: 2}
-  m_UseShadowmask: 0
+  m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
   serializedVersion: 2
@@ -664,6 +664,26 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 4bcb255a9d0bd2e42ba4003ca4f38916, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 380cc13a898dcc14190ab3666e3e91a3, type: 3}
+--- !u!1 &665721121 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1680819063920738284, guid: 743a843354106ae4faf8657aa824fe8c,
+    type: 3}
+  m_PrefabInstance: {fileID: 1680819065241274427}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &665721136
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 665721121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d9c2882064d6b34f8cab69b3200f606, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highlightedMaterial: {fileID: 2100000, guid: 79c21dd307ecbd4409fd6054f0ae02bb, type: 2}
+  SelectedMaterial: {fileID: 2100000, guid: e69c085d403667149b4f83acb3f9a840, type: 2}
 --- !u!1001 &676943526
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1343,6 +1363,26 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1282560516 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3672579455405156303, guid: 6b4f320e06e8ebe4c957acfe42c3f6fd,
+    type: 3}
+  m_PrefabInstance: {fileID: 7457505400756434465}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1282560517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1282560516}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59e954b6667d1fd46bcddc3cadf6aae2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentlyHighlightedSelectable: {fileID: 0}
+  currentlySelectedSelectables: []
 --- !u!1 &1430727411
 GameObject:
   m_ObjectHideFlags: 0
